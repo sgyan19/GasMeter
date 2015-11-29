@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">GasMeter</string>
+    <string name="app_name_zh">燃气统计</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="object_dir">gasData</string>
+    <string name="query_meter_date_tip">时间选择</string>
+    <string name="query_meter_date_begin">起始日期</string>
+    <string name="query_meter_date_end">结束日期</string>
+    <string name="query_meter_company_show">分公司统计</string>
+    <string name="query_meter_place_show">分片区统计</string>
+    <string name="target_file_name">gasMeter.db</string>
+    <string name="user_list">用户列表</string>
+    <string name="meter_statistics">抄表统计</string>
+    <string name="main_read_meter">抄    表</string>
+    <string name="main_meter_show">查询统计</string>
+    <string name="main_bluetooth">连接设备</string>
+    <string name="main_exit">退    出</string>
+    <string name="user_meter_item_name">姓名：%1$s</string>
+    <string name="user_meter_item_address">用户住址：%1$s</string>
+    <string name="user_meter_item_number">编号：%1$s</string>
+    <string name="user_meter_item_last_data">上月用量：%1$.2f</string>
+    <string name="user_meter_item_data">本月用量：%1$.2f</string>
+
+</resources>
