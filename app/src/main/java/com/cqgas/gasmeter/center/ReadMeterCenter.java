@@ -8,7 +8,7 @@ import java.util.List;
 /**
  * Created by 国耀 on 2015/11/28.
  */
-public class MeterReadingCenter {
+public class ReadMeterCenter {
 
     public static List<UserMeter> getDataForUi(){
         // 测试数据

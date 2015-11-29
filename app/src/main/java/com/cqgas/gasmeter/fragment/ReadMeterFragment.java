@@ -10,7 +10,7 @@ import android.widget.ListView;
 
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.adapter.UserMeterBaseAdapter;
-import com.cqgas.gasmeter.center.MeterReadingCenter;
+import com.cqgas.gasmeter.center.ReadMeterCenter;
 
 /**
  * Created by 国耀 on 2015/11/28.
@@ -38,7 +38,7 @@ public class ReadMeterFragment extends Fragment {
 
     private void initView(View rootView){
         mListView = (ListView)rootView.findViewById(R.id.user_list);
-        mAdaper = new UserMeterBaseAdapter(getActivity(), MeterReadingCenter.getDataForUi());
+        mAdaper = new UserMeterBaseAdapter(getActivity(), ReadMeterCenter.getDataForUi());
         mListView.setAdapter(mAdaper);
     }
 }
