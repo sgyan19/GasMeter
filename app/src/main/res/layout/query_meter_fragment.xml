@@ -18,10 +18,12 @@
             android:textSize="18sp"
             android:text="@string/query_meter_date_tip"/>
         <EditText
+            android:id="@+id/date_begin"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="@string/query_meter_date_begin"
+            android:editable="false"
             android:textSize="16sp"
             />
         <TextView
@@ -30,10 +32,12 @@
             android:textSize="20sp"
             android:text="～"/>
         <EditText
+            android:id="@+id/date_end"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="16sp"
+            android:editable="false"
             android:hint="@string/query_meter_date_end"/>
     </LinearLayout>
     <ListView

@@ -27,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements Order,View.OnClic
         setContentView(R.layout.activity_main);
 //        handler = new ConnectHandler(this,this);
 //        Server.start(handler,handler);
+
         initDoorListener();
     }
 
