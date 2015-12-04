@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 import android.util.Log;
 
-import com.cqgas.gasmeter.models.GsonUtils;
+import com.cqgas.gasmeter.utils.GsonUtils;
 import com.cqgas.gasmeter.models.OrderModel;
 import com.cqgas.gasmeter.models.ResponseModel;
 

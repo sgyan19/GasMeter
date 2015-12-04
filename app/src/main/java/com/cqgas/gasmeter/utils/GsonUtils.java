@@ -5,7 +5,7 @@
  *  which accompanies this distribution, and is available at
  *
  *****************************************************************************/
-package com.cqgas.gasmeter.models;
+package com.cqgas.gasmeter.utils;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
