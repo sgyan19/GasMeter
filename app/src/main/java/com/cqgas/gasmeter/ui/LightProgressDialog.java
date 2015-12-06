@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.cqgas.gasmeter.task;
+package com.cqgas.gasmeter.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -52,7 +52,7 @@ public class LightProgressDialog extends Dialog {
 	@SuppressLint("NewApi")
 	public static Dialog create(Context context, CharSequence message) {
 
-		Dialog dialog = new LightProgressDialog(context);
+		Dialog dialog = new LightProgressDialog(context,R.style.dialog);
 		dialog.setContentView(R.layout.progress_dialog);
 
 		dialog.setCanceledOnTouchOutside(false);
@@ -87,9 +87,13 @@ public class LightProgressDialog extends Dialog {
         });
         return dialog;
     }
+    private LightProgressDialog(Context context) {
+        super(context);
+        showAnimation = true;
+    }
 
-	private LightProgressDialog(Context context) {
-		super(context);
+	private LightProgressDialog(Context context,int theme) {
+		super(context,theme);
         showAnimation = true;
 	}
 

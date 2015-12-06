@@ -63,16 +63,25 @@ public final class StorageUtils {
 				appDir.mkdirs();
 			}
 			TargetDirPath = appDir.getAbsolutePath();
-			File targetFile = new File(TargetDirPath,context.getResources().getString(R.string.target_file_name));
-			TargetFilePath = targetFile.getAbsolutePath();
+			File targetFormPcFile = new File(TargetDirPath,context.getResources().getString(R.string.target_from_pc_file_name));
+			File targetToPcFile = new File(TargetDirPath,context.getResources().getString(R.string.target_to_pc_file_name));
+			TargetFormPcFilePath = targetFormPcFile.getAbsolutePath();
+			TargetToPcFilePath = targetToPcFile.getAbsolutePath();
 		}
 	}
 
-	public static String getTargetFilePath(){
-		if(TextUtils.isEmpty(TargetFilePath)){
+	public static String getTargetFormPcFilePath(){
+		if(TextUtils.isEmpty(TargetFormPcFilePath)){
 			initTargetPath();
 		}
-		return TargetFilePath;
+		return TargetFormPcFilePath;
+	}
+
+	public static String getTargetToPcFilePath(){
+		if(TextUtils.isEmpty(TargetToPcFilePath)){
+			initTargetPath();
+		}
+		return TargetToPcFilePath;
 	}
 
 	public static String getTargetDirPath(){
@@ -93,5 +102,6 @@ public final class StorageUtils {
 		return names;
 	}
 	private static String TargetDirPath;
-	private static String TargetFilePath;
+	private static String TargetFormPcFilePath;
+	private static String TargetToPcFilePath;
 }

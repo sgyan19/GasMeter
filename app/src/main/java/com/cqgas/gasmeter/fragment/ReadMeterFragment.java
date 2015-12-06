@@ -1,5 +1,6 @@
 package com.cqgas.gasmeter.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -10,10 +11,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.adapter.UserMeterBaseAdapter;
 import com.cqgas.gasmeter.center.ReadMeterCenter;
+import com.cqgas.gasmeter.task.ProgressDialogTask;
 
 /**
  * Created by 国耀 on 2015/11/28.
@@ -63,17 +66,53 @@ public class ReadMeterFragment extends BasePageFragment {
             case android.R.id.home:
                 getActivity().finish();
                 break;
+            case R.id.read_meter_do_read:
+                new ReadBluetoothTask(getActivity()).execute();
+                break;
             case R.id.read_meter_filter_unread:
                 if(mFilterItem.isChecked()){
-                    mAdaper.clear();
-                    mAdaper.addAll(ReadMeterCenter.getUiAll());
+                    mAdaper.reset(ReadMeterCenter.getUiAll());
                 }else{
-                    mAdaper.clear();
-                    mAdaper.addAll(ReadMeterCenter.getUiUnRead());
+                    mAdaper.reset(ReadMeterCenter.getUiUnRead());
                 }
                 mFilterItem.setChecked(!mFilterItem.isChecked());
                 break;
         }
         return true;
+    }
+
+    private class ReadBluetoothTask extends ProgressDialogTask<Boolean> {
+        public ReadBluetoothTask(Context context){
+            super(context);
+        }
+
+        @Override
+        protected void onPreExecute() throws Exception {
+            super.onPreExecute();
+            showIndeterminate();
+        }
+
+        @Override
+        public Boolean call() throws Exception {
+            return ReadMeterCenter.doBluetoothData();
+        }
+
+        @Override
+        protected void onSuccess(Boolean queryCore) throws Exception {
+            super.onSuccess(queryCore);
+            if(queryCore) {
+                mAdaper.reset(ReadMeterCenter.getUiAll());
+                Toast.makeText(context, "抄表完成", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(context,"抄表失败，请检查蓝牙设备是否连接成功",Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        @Override
+        protected void onException(Exception e) throws RuntimeException {
+            super.onException(e);
+            e.printStackTrace();
+            Toast.makeText(context,"抄表异常，请检查蓝牙设备是否连接成功",Toast.LENGTH_SHORT).show();
+        }
     }
 }

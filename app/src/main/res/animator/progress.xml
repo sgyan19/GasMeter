@@ -3,40 +3,40 @@
     android:oneshot="false" >
 
     <item
-        android:drawable="@drawable/ic_progress_1"
+        android:drawable="@mipmap/ic_progress_1"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_2"
+        android:drawable="@mipmap/ic_progress_2"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_3"
+        android:drawable="@mipmap/ic_progress_3"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_4"
+        android:drawable="@mipmap/ic_progress_4"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_5"
+        android:drawable="@mipmap/ic_progress_5"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_6"
+        android:drawable="@mipmap/ic_progress_6"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_7"
+        android:drawable="@mipmap/ic_progress_7"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_8"
+        android:drawable="@mipmap/ic_progress_8"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_9"
+        android:drawable="@mipmap/ic_progress_9"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_10"
+        android:drawable="@mipmap/ic_progress_10"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_11"
+        android:drawable="@mipmap/ic_progress_11"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/ic_progress_12"
+        android:drawable="@mipmap/ic_progress_12"
         android:duration="50"/>
 
 </animation-list>

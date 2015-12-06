@@ -19,6 +19,8 @@ import java.util.concurrent.Executor;
 import android.app.Dialog;
 import android.content.Context;
 
+import com.cqgas.gasmeter.ui.LightProgressDialog;
+
 /**
  * Task that runs with a progress dialog at the foreground
  * 

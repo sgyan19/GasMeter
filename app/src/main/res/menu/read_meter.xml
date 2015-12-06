@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/read_meter_door"
+    <item android:id="@+id/read_meter_do_read"
         android:title="@string/action_settings"
         android:icon="@mipmap/read_meter_menu_auto_read"
         android:orderInCategory="100"

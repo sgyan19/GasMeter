@@ -112,6 +112,27 @@ public abstract class BaseArrayAdapter<T, H> extends BaseAdapter {
 	}
 
 	/**
+	 * 添加集合
+	 *
+	 * @param objects
+	 */
+	public void reset(Collection<T> objects) {
+		if (mOriginalValues != null) {
+			synchronized (mLock) {
+                mOriginalValues.clear();
+				mOriginalValues.addAll(objects);
+				if (mNotifyOnChange)
+					notifyDataSetChanged();
+			}
+		} else {
+            mObjects.clear();
+			mObjects.addAll(objects);
+			if (mNotifyOnChange)
+				notifyDataSetChanged();
+		}
+	}
+
+	/**
 	 * Inserts the specified object at the specified index in the array.
 	 * 
 	 * @param object

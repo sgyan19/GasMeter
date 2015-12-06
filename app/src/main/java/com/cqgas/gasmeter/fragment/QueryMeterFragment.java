@@ -103,12 +103,12 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case android.R.id.home:
-//                getActivity().finish();
-//                break;
-//
-//        }
+        switch (item.getItemId()){
+            case android.R.id.home:
+                getActivity().finish();
+                break;
+
+        }
         return false;
     }
 

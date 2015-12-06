@@ -11,7 +11,8 @@
     <string name="query_meter_active">统计</string>
     <string name="query_meter_place_show">分片区统计</string>
     <string name="query_meter_menu_filter">只显示未抄录</string>
-    <string name="target_file_name">gasMeter.db</string>
+    <string name="target_from_pc_file_name">GasMeterA.json</string>
+    <string name="target_to_pc_file_name">GasMeterB.json</string>
     <string name="user_list">用户列表</string>
     <string name="meter_statistics">抄表统计</string>
     <string name="main_read_meter">抄    表</string>
