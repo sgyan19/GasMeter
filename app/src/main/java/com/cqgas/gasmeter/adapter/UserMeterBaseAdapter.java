@@ -9,7 +9,6 @@ import android.widget.TextView;
 
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.core.MeterCore;
-import com.cqgas.gasmeter.core.UserMeter;
 import com.cqgas.gasmeter.ui.DataInputDialog;
 import com.cqgas.gasmeter.utils.DateUtils;
 

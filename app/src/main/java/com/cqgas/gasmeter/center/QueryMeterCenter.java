@@ -9,10 +9,8 @@ import java.util.List;
  * Created by 国耀 on 2015/11/29.
  */
 public class QueryMeterCenter {
-    public static final int QUERY_TYPE_COMPANY = 0;
-    public static final int QUERY_TYPE_PLACE = 1;
 
-    public static QueryCore getUiQuery(int type,long beginDate,long endDate){
+    public static QueryCore getUiQuery(String query){
         return new QueryCore();
     }
 }

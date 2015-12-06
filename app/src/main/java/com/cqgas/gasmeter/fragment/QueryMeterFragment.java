@@ -34,17 +34,15 @@ import java.util.List;
  */
 public class QueryMeterFragment extends BasePageFragment implements View.OnClickListener{
     private ListView mDetailsList;
-    private EditText mBeginDateEdit;
-    private EditText mEndDateEdit;
     private Button mCompany;
     private Button mPlace;
-    private Date mBeginDate;
-    private Date mEndDate;
+    private Button mExit;
+    private EditText mQueryCondition;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View view = inflater.inflate(R.layout.query_meter_fragment,container,false);
+        View view = inflater.inflate(R.layout.query_meter_fragment, container, false);
         getActivity().setTitle(R.string.meter_statistics);
         return view;
     }
@@ -60,85 +58,58 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
     }
     private void initView(View v){
         mDetailsList = (ListView) v.findViewById(R.id.meter_details_list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, getListViewData(QueryMeterCenter.getUiQuery(0,0,0)));
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, getListViewData(QueryMeterCenter.getUiQuery("")));
         mDetailsList.setAdapter(adapter);
 
-        mBeginDateEdit = (EditText) v.findViewById(R.id.date_begin);
-        mBeginDateEdit.setOnClickListener(this);
-
-        mEndDateEdit = (EditText) v.findViewById(R.id.date_end);
-        mEndDateEdit.setOnClickListener(this);
-
-        mCompany = (Button) v.findViewById(R.id.query_meter_company);
+        mQueryCondition = (EditText) v.findViewById(R.id.query_meter_input);
+        mCompany = (Button) v.findViewById(R.id.query_meter_active);
         mPlace = (Button) v.findViewById(R.id.query_meter_place);
+        mExit = (Button) v.findViewById(R.id.query_meter_exit);
 
         mCompany.setOnClickListener(this);
         mPlace.setOnClickListener(this);
+        mExit.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.date_begin:
-                getDatePicked(mBeginDateEdit,true);
-                break;
-            case R.id.date_end:
-                getDatePicked(mEndDateEdit,false);
-            case R.id.query_meter_company:
-                queryAndShowResult(QueryMeterCenter.QUERY_TYPE_COMPANY);
+            case R.id.query_meter_active:
+                queryAndShowResult();
                 break;
             case R.id.query_meter_place:
-                queryAndShowResult(QueryMeterCenter.QUERY_TYPE_PLACE);
+                queryAndShowResult();
+                break;
+            case R.id.query_meter_exit:
+                getView().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        getActivity().finish();
+                    }
+                },400);
                 break;
         }
     }
-    public void queryAndShowResult(int type){
-        if(mBeginDate == null || mEndDate == null){
-            return;
-        }
-        if(mEndDate.before(mBeginDate)){
-            mEndDateEdit.setText("");
-            Toast.makeText(getActivity(),"结束日期应在开始日期之后",Toast.LENGTH_SHORT).show();
-            return;
-        }
-        new QueryTask(getActivity(),mBeginDate.getTime(),mEndDate.getTime(),type).execute();
+    public void queryAndShowResult(){
+        new QueryTask(getActivity(),mQueryCondition.getText().toString()).execute();
 
-    }
-
-    public void getDatePicked(final EditText v,final boolean begin){
-        Calendar d = Calendar.getInstance();
-        int year = d.get(Calendar.YEAR);
-        final int month = d.get(Calendar.MONTH);
-        int day = d.get(Calendar.DAY_OF_MONTH);
-        DatePickerDialog dialog = new DatePickerDialog(getActivity(),new DatePickerDialog.OnDateSetListener(){
-            @Override
-            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-                v.setText(String.format("%04d-%02d-%02d",year,monthOfYear,dayOfMonth));
-                if(begin){
-                    mBeginDate = new Date(year,monthOfYear,dayOfMonth,0,0,0);
-                }else{
-                    mEndDate = new Date(year,monthOfYear,dayOfMonth,0,0,0);
-                }
-            }
-        },year,month,day);
-        dialog.show();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getActivity().getMenuInflater().inflate(R.menu.query_meter, menu);
-        return true;
+//        getActivity().getMenuInflater().inflate(R.menu.query_meter, menu);
+        return false;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case android.R.id.home:
-                getActivity().finish();
-                break;
-
-        }
-        return true;
+//        switch (item.getItemId()){
+//            case android.R.id.home:
+//                getActivity().finish();
+//                break;
+//
+//        }
+        return false;
     }
 
     public List<String> getListViewData(QueryCore item){
@@ -148,27 +119,15 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
             ui.add(item.getUiReadUserCount());
             ui.add(item.getUiUnReadUserCount());
             ui.add(item.getUiReadData());
-            ui.add(item.getUiReadRate());
-            ui.add(item.getUiDayAverageUserCount());
-            ui.add(item.getUiHourAverageUserCount());
-            ui.add(item.getUiReReadCount());
-            ui.add(item.getUiReReadProbability());
-            ui.add(item.getUiEstimateReadTimes());
-            ui.add(item.getUiTorchTimes());
-            ui.add(item.getUiLocationTimes());
         }
         return ui;
     }
 
     private class QueryTask extends ProgressDialogTask<QueryCore> {
-        private long begin;
-        private long end;
-        private int type;
-        public QueryTask(Context context,long begin,long end,int type){
+        private String query;
+        public QueryTask(Context context,String queryCondition){
             super(context);
-            this.begin = begin;
-            this.end = end;
-            this.type = type;
+            query = queryCondition;
         }
 
         @Override
@@ -179,7 +138,7 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
 
         @Override
         public QueryCore call() throws Exception {
-            return QueryMeterCenter.getUiQuery(type,begin,end);
+            return QueryMeterCenter.getUiQuery(query);
         }
 
         @Override

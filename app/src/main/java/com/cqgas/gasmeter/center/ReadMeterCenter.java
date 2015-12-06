@@ -1,7 +1,6 @@
 package com.cqgas.gasmeter.center;
 
 import com.cqgas.gasmeter.core.MeterCore;
-import com.cqgas.gasmeter.core.UserMeter;
 import com.cqgas.gasmeter.utils.DateUtils;
 
 import java.util.ArrayList;

@@ -3,13 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/read_meter_door"
         android:title="@string/action_settings"
-        android:icon="@mipmap/ic_launcher_2"
+        android:icon="@mipmap/read_meter_menu_auto_read"
         android:orderInCategory="100"
         app:showAsAction="always"/>
     <item android:id="@+id/read_meter_filter_unread"
-        android:title="@string/action_settings"
+        android:title="@string/query_meter_menu_filter"
+        android:icon="@mipmap/read_meter_menu_filter_unread"
         android:checkable="true"
         android:checked="false"
         android:orderInCategory="100"
-        app:showAsAction="always"/>
+        app:showAsAction="always" />
 </menu>

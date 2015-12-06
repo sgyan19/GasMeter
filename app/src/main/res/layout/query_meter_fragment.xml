@@ -10,35 +10,13 @@
         android:orientation="horizontal"
         android:layout_marginBottom="10dp"
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="10dp"
-            android:textSize="18sp"
-            android:text="@string/query_meter_date_tip"/>
         <EditText
-            android:id="@+id/date_begin"
-            android:layout_width="0dp"
+            android:id="@+id/query_meter_input"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="@string/query_meter_date_begin"
-            android:editable="false"
-            android:textSize="16sp"
+            android:drawableLeft="@mipmap/query_meter_icon"
+            android:hint="@string/query_meter_input_hint"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="～"/>
-        <EditText
-            android:id="@+id/date_end"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="16sp"
-            android:editable="false"
-            android:hint="@string/query_meter_date_end"/>
     </LinearLayout>
     <ListView
         android:id="@+id/meter_details_list"
@@ -48,15 +26,21 @@
         android:background="@drawable/query_meter_info_list_background"
         />
     <Button
-        android:id="@+id/query_meter_company"
+        android:id="@+id/query_meter_active"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/query_meter_company_show"
+        android:text="@string/query_meter_active"
         />
     <Button
         android:id="@+id/query_meter_place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/query_meter_place_show"
+        />
+    <Button
+        android:id="@+id/query_meter_exit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/main_exit"
         />
 </LinearLayout>
