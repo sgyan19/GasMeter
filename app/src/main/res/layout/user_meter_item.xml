@@ -37,30 +37,42 @@
                     android:id="@+id/user_meter_item_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="姓名:"
+                    android:text="户主名称:"
                     android:textSize="@dimen/list_item_text_size" />
 
                 <TextView
-                    android:id="@+id/user_meter_item_number"
+                    android:id="@+id/user_meter_item_average_data"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="编号:"
+                    android:text="平均用量:"
                     android:textSize="@dimen/list_item_text_size" />
             </LinearLayout>
-
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal">
             <TextView
-                android:id="@+id/user_meter_item_address"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:id="@+id/user_meter_item_last_read"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="用户地址:"
+                android:text="上次表底:"
                 android:textSize="@dimen/list_item_text_size" />
-
+            <TextView
+                android:id="@+id/user_meter_item_last_read_date"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="上次日期:"
+                android:textSize="@dimen/list_item_text_size" />
+            </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
@@ -68,27 +80,28 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/user_meter_item_last_data"
+                    android:id="@+id/user_meter_item_this_read"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="上月:"
+                    android:text="本次表底:"
                     android:textSize="@dimen/list_item_text_size" />
 
                 <TextView
-                    android:id="@+id/user_meter_item_data"
+                    android:id="@+id/user_meter_item_this_data"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="1"
                     android:singleLine="true"
-                    android:text="本月:"
+                    android:text="本月用量:"
                     android:textSize="@dimen/list_item_text_size" />
             </LinearLayout>
         </LinearLayout>
 
         <Button
             android:id="@+id/user_meter_item_enter"
+            android:background="?android:attr/selectableItemBackground"
             android:layout_width="@dimen/list_item_height"
             android:layout_height="@dimen/list_item_height"
             android:layout_alignParentRight="true"

@@ -16,10 +16,11 @@
     <string name="main_meter_show">查询统计</string>
     <string name="main_bluetooth">连接设备</string>
     <string name="main_exit">退    出</string>
-    <string name="user_meter_item_name">姓名：%1$s</string>
-    <string name="user_meter_item_address">用户住址：%1$s</string>
-    <string name="user_meter_item_number">编号：%1$s</string>
-    <string name="user_meter_item_last_data">上月用量：%1$.2f</string>
-    <string name="user_meter_item_data">本月用量：%1$.2f</string>
-
+    <string name="user_meter_item_name">户主名称：%1$s</string>
+    <string name="user_meter_item_last_read">上次表底：%1$s</string>
+    <string name="user_meter_item_last_read_date">上次日期：%1$s</string>
+    <string name="user_meter_item_average_data">平均用量：%1$s</string>
+    <string name="user_meter_item_this_read">本次表底：%1$s</string>
+    <string name="user_meter_item_this_data">本月用量：%1$s</string>
+    <string name="input_dialog_title">输入抄表底数</string>
 </resources>

@@ -48,11 +48,13 @@
         android:background="@drawable/query_meter_info_list_background"
         />
     <Button
+        android:id="@+id/query_meter_company"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/query_meter_company_show"
         />
     <Button
+        android:id="@+id/query_meter_place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/query_meter_place_show"

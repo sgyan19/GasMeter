@@ -8,16 +8,19 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.cqgas.gasmeter.R;
+import com.cqgas.gasmeter.fragment.BasePageFragment;
 
 public class PageFragmentActivity extends AppCompatActivity {
 	
 	public final static String EXTRA_KEY_FRAGMENT_ARGS = "bundle_args";
     public final static String EXTRA_KEY_FRAGMENT_NAME = "fragment_class";
 	
-	private Fragment f;
+	private BasePageFragment f;
 	private Bundle args;
 	
 	@Override
@@ -36,8 +39,18 @@ public class PageFragmentActivity extends AppCompatActivity {
 		f.setArguments(args);
 		fTransaction.commitAllowingStateLoss();
 	}
-	
-	
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+//		return super.onCreateOptionsMenu(menu);
+		return f.onCreateOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		return f.onOptionsItemSelected(item);
+	}
+
 	private boolean createFragmentInstance(String name){
 		if(TextUtils.isEmpty(name)){
 			Toast.makeText(this, "内部跳转错误", Toast.LENGTH_SHORT).show();
@@ -46,10 +59,10 @@ public class PageFragmentActivity extends AppCompatActivity {
 		try{
 			Class fragmentClass = Class.forName(name);
 			Object o =fragmentClass.newInstance();
-			if(o == null || !(o instanceof Fragment)){
+			if(o == null || !(o instanceof BasePageFragment)){
 				throw new Exception("start PageFragmentActivity error(error instance)");
 			}
-			f = (Fragment) o;
+			f = (BasePageFragment) o;
 		}catch(ClassNotFoundException e){
 			Toast.makeText(this, "内部跳转错误，找不到fragment类", Toast.LENGTH_SHORT).show();
 			return false;

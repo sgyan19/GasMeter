@@ -1,6 +1,8 @@
 package com.cqgas.gasmeter.center;
 
+import com.cqgas.gasmeter.core.MeterCore;
 import com.cqgas.gasmeter.core.UserMeter;
+import com.cqgas.gasmeter.utils.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,31 +12,52 @@ import java.util.List;
  */
 public class ReadMeterCenter {
 
-    public static List<UserMeter> getDataForUi(){
+    public static List<MeterCore> getUiAll(){
         // 测试数据
-        List<UserMeter> result = new ArrayList<>();
-        UserMeter meter = new UserMeter();
-        meter.setName("袁心伦");
-        meter.setAddress("南华路瓦窑三社预制板厂");
-        meter.setNumber("01030001-1");
-        meter.setLastMonthQuantity(666f);
-        meter.setQuantity(-1.0f);
+        List<MeterCore> result = new ArrayList<>();
+        MeterCore meter = new MeterCore();
+        meter.cbjl_hz_mc = "袁心伦";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150313");
+        meter.cbjl_bcbd = 93;
+        meter.cbjl_pingjun_yql = "60";
         result.add(meter);
 
-        meter = new UserMeter();
-        meter.setName("唐登华");
-        meter.setAddress("南华路瓦窑三社农村");
-        meter.setNumber("01030002-1");
-        meter.setLastMonthQuantity(411f);
-        meter.setQuantity(500f);
+        meter = new MeterCore();
+        meter.cbjl_hz_mc = "唐登华";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150223");
+        meter.cbjl_bcbd = 93;
+        meter.cbjl_pingjun_yql = "60";
         result.add(meter);
 
-        meter = new UserMeter();
-        meter.setName("杨世坤");
-        meter.setAddress("南华路瓦窑三社农村");
-        meter.setNumber("01030003-1");
-        meter.setLastMonthQuantity(90f);
-        meter.setQuantity(-1.0f);
+        meter = new MeterCore();
+        meter.cbjl_hz_mc = "杨世坤";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150703");
+        meter.cbjl_bcbd = 0;
+        meter.cbjl_pingjun_yql = "60";
+        result.add(meter);
+
+        meter = new MeterCore();
+        meter.cbjl_hz_mc = "方仲永";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150527");
+        meter.cbjl_bcbd = 93;
+        meter.cbjl_pingjun_yql = "60";
+        result.add(meter);
+        return result;
+    }
+
+    public static List<MeterCore> getUiUnRead() {
+        // 测试数据
+        List<MeterCore> result = new ArrayList<>();
+        MeterCore meter = new MeterCore();
+        meter.cbjl_hz_mc = "杨世坤";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150703");
+        meter.cbjl_bcbd = 0;
+        meter.cbjl_pingjun_yql = "60";
         result.add(meter);
         return result;
     }
