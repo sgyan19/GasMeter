@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.cqgas.gasmeter.R;
+import com.cqgas.gasmeter.connect.Server;
 import com.cqgas.gasmeter.fragment.QueryMeterFragment;
 import com.cqgas.gasmeter.fragment.ReadMeterFragment;
 import com.cqgas.gasmeter.utils.StorageUtils;
@@ -25,8 +26,8 @@ public class MainActivity extends AppCompatActivity implements Order,View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        handler = new ConnectHandler(this,this);
-//        Server.start(handler,handler);
+        handler = new ConnectHandler(this,this);
+        Server.start(handler, handler);
 
         initDoorListener();
     }
