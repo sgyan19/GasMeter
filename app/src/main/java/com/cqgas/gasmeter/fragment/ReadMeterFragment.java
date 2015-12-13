@@ -1,6 +1,7 @@
 package com.cqgas.gasmeter.fragment;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -16,7 +17,12 @@ import android.widget.Toast;
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.adapter.UserMeterBaseAdapter;
 import com.cqgas.gasmeter.center.ReadMeterCenter;
+import com.cqgas.gasmeter.core.MeterCore;
 import com.cqgas.gasmeter.task.ProgressDialogTask;
+
+import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by 国耀 on 2015/11/28.
@@ -49,8 +55,7 @@ public class ReadMeterFragment extends BasePageFragment {
 
     private void initView(View rootView){
         mListView = (ListView)rootView.findViewById(R.id.user_list);
-        mAdaper = new UserMeterBaseAdapter(getActivity(), ReadMeterCenter.getUiAll());
-        mListView.setAdapter(mAdaper);
+        new GetCoreData(GetCoreData.FLAG_GET_ALL).execute();
     }
 
     @Override
@@ -67,13 +72,13 @@ public class ReadMeterFragment extends BasePageFragment {
                 getActivity().finish();
                 break;
             case R.id.read_meter_do_read:
-                new ReadBluetoothTask(getActivity()).execute();
+                new ReadBluetoothTask().execute();
                 break;
             case R.id.read_meter_filter_unread:
                 if(mFilterItem.isChecked()){
-                    mAdaper.reset(ReadMeterCenter.getUiAll());
+                    new GetCoreData(GetCoreData.FLAG_GET_ALL).execute();
                 }else{
-                    mAdaper.reset(ReadMeterCenter.getUiUnRead());
+                    new GetCoreData(GetCoreData.FLAG_GET_UNREAD).execute();
                 }
                 mFilterItem.setChecked(!mFilterItem.isChecked());
                 break;
@@ -81,9 +86,54 @@ public class ReadMeterFragment extends BasePageFragment {
         return true;
     }
 
+    private class GetCoreData extends ProgressDialogTask<List<MeterCore>>{
+        public static final int FLAG_GET_ALL = 0;
+        public static final int FLAG_GET_UNREAD = 1;
+        private int flag;
+        public GetCoreData(int flag){
+            super(getActivity());
+            this.flag = flag;
+        }
+
+        @Override
+        protected void onPreExecute() throws Exception {
+            super.onPreExecute();
+            showIndeterminate();
+        }
+        @Override
+        public List<MeterCore> call() throws Exception {
+            List<MeterCore> result = null;
+            switch (flag){
+                case FLAG_GET_ALL:
+                    result = ReadMeterCenter.getUiAll();
+                    break;
+                case FLAG_GET_UNREAD:
+                    result = ReadMeterCenter.getUiUnRead();
+                    break;
+            }
+            return result;
+        }
+        @Override
+        protected void onException(Exception e) throws RuntimeException {
+            super.onException(e);
+            if(e instanceof FileNotFoundException)
+                Toast.makeText(getActivity(), "Json数据文件不存在", Toast.LENGTH_SHORT);
+        }
+        @Override
+        protected void onSuccess(List<MeterCore> objects) throws Exception {
+            super.onSuccess(objects);
+            if(mAdaper == null) {
+                mAdaper = new UserMeterBaseAdapter(getActivity(), objects);
+                mListView.setAdapter(mAdaper);
+            }else{
+                mAdaper.reset(objects);
+            }
+        }
+    }
+
     private class ReadBluetoothTask extends ProgressDialogTask<Boolean> {
-        public ReadBluetoothTask(Context context){
-            super(context);
+        public ReadBluetoothTask(){
+            super(getActivity());
         }
 
         @Override

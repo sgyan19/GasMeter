@@ -49,6 +49,9 @@ public class ConnectHandler extends Handler implements SocketRunner.ReceiveCallB
                 case OrderModel.TYPE_FILE_INFO:
                     rModel = back.onFileInfo(model.name);
                     break;
+                case OrderModel.TYPE_FILE_DOWNLOAD:
+                    rModel = back.onFileDownload();
+                    break;
             }
         }
         if(rModel != null){

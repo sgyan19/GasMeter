@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 import com.cqgas.gasmeter.MyApplication;
 import com.cqgas.gasmeter.core.MeterCore;
 import com.cqgas.gasmeter.sqlite.DBHelper;
+import com.cqgas.gasmeter.utils.DateUtils;
 import com.cqgas.gasmeter.utils.StorageUtils;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -144,6 +145,26 @@ public class ReadMeterCenter {
 //        return result;
     }
 
+    public static void readMeter(String cbjl_id,int number){
+        SQLiteDatabase db = null;
+        long time = System.currentTimeMillis();
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put("cbjl_cb_qk", MeterCore.NORMAL);
+            cv.put("cbjl_sjcbrq", DateUtils.currentTime());
+            cv.put("cbjl_bcbd",number);
+            db = dbHelper.getWritableDatabase();
+            db.update(DBHelper.TABLE_NAME, cv, "cbjl_id = ?", new String[]{cbjl_id});
+        } finally {
+            if (null != db) {
+                db.close();
+            }
+        }
+
+        updateMeter(cbjl_id, "cbjl_bcbd", number);
+        updateMeter(cbjl_id,"cbjl_cb_qk",MeterCore.NORMAL);
+    }
+
     /**
      * 更新字符串列
      * @param cbjl_id 主键
@@ -151,7 +172,7 @@ public class ReadMeterCenter {
      * @param value 要更新成的值
      * @throws SQLException
      */
-    public static void updateMeterString(String cbjl_id, String column, String value) throws SQLException {
+    public static void updateMeter(String cbjl_id, String column, String value) throws SQLException {
         SQLiteDatabase db = null;
         try {
             ContentValues cv = new ContentValues();
@@ -172,7 +193,7 @@ public class ReadMeterCenter {
      * @param value 要更新成的值
      * @throws SQLException
      */
-    public static void updateMeterNumber(String cbjl_id, String column, Number value) throws SQLException {
+    public static void updateMeter(String cbjl_id, String column, Number value) throws SQLException {
         SQLiteDatabase db = null;
         try {
             ContentValues cv = new ContentValues();
@@ -204,8 +225,9 @@ public class ReadMeterCenter {
         try {
             writer = new FileWriter(toPCFile);
             writer.write(jsonArray.toString());
+            writer.flush();
         } finally {
-            if (null != null) {
+            if (writer != null) {
                 try {
                     writer.close();
                 } catch (IOException e) {
@@ -241,7 +263,7 @@ public class ReadMeterCenter {
         try {
             db = dbHelper.getWritableDatabase();
             db.execSQL("DROP TABLE IF EXISTS " + DBHelper.TABLE_NAME_OLD);
-            db.execSQL("RENAME TABLE " + DBHelper.TABLE_NAME + " TO " + DBHelper.TABLE_NAME_OLD);
+            db.execSQL("ALTER TABLE " + DBHelper.TABLE_NAME + " RENAME TO " + DBHelper.TABLE_NAME_OLD);
             db.execSQL(DBHelper.CREATE_TABLE);
 
             bufferedReader = new BufferedReader(new FileReader(StorageUtils.getTargetFormPcFilePath()));
@@ -254,7 +276,7 @@ public class ReadMeterCenter {
         } catch (IllegalStateException | ClassCastException | UnsupportedOperationException e) {
             if (null != db) {
                 db.execSQL("DROP TABLE IF EXISTS " + DBHelper.TABLE_NAME);
-                db.execSQL("RENAME TABLE " + DBHelper.TABLE_NAME_OLD + " TO " + DBHelper.TABLE_NAME);
+                db.execSQL("ALTER TABLE " + DBHelper.TABLE_NAME_OLD + " RENAME TO " + DBHelper.TABLE_NAME);
             }
             throw new JsonParseException("Error json format", e);
         } finally {

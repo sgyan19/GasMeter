@@ -7,6 +7,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.cqgas.gasmeter.center.ReadMeterCenter;
 import com.cqgas.gasmeter.utils.StorageUtils;
 import com.cqgas.gasmeter.connect.ConnectHandler;
 import com.cqgas.gasmeter.connect.Order;
@@ -113,6 +114,20 @@ public class MainActivity extends AppCompatActivity implements Order {
                 model.size = len;
                 model.name = name;
             }
+        }
+        return model;
+    }
+
+    @Override
+    public ResponseModel onFileDownload() {
+        Toast.makeText(this,"请求下载文件",Toast.LENGTH_SHORT).show();
+        ResponseModel model = new ResponseModel();
+        try {
+            ReadMeterCenter.buildToPcFile();
+            model.type = 0;
+        }catch (Exception e){
+            e.printStackTrace();
+            model.type = 1;
         }
         return model;
     }

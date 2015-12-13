@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.cqgas.gasmeter.R;
+import com.cqgas.gasmeter.center.ReadMeterCenter;
 import com.cqgas.gasmeter.core.MeterCore;
 import com.cqgas.gasmeter.ui.DataInputDialog;
 import com.cqgas.gasmeter.utils.DateUtils;
@@ -66,6 +67,7 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
                     public void onClick(String v) {
                         int number = Integer.valueOf(v);
                         core.cbjl_bcbd = number;
+                        ReadMeterCenter.readMeter(core.cbjl_id, number);
                         updateIsRead(h,core);
                     }
                 },MeterCore.getUiThisRead(core));

@@ -10,4 +10,5 @@ public interface Order {
     ResponseModel onStartUpdata(String name);
     ResponseModel onEndUpdata(String name);
     ResponseModel onFileInfo(String name);
+    ResponseModel onFileDownload();
 }

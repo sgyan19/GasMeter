@@ -15,7 +15,7 @@ public class DateUtils {
 
     public static long getTimeInMillis(String date) {
         long result = 0;
-        if (!TextUtils.isEmpty(date) || date.length() < 8) {
+        if (!TextUtils.isEmpty(date) && date.length() > 8) {
             int year = Integer.valueOf(date.substring(0, 4));
             int month = Integer.valueOf(date.substring(4, 6));
             int day = Integer.valueOf(date.substring(6, 8));
@@ -24,6 +24,14 @@ public class DateUtils {
             result = calendar.getTimeInMillis();
         }
         return result;
+    }
+
+    public static String currentTime(){
+        if(simpleDateFormat == null){
+            simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        }
+        Date date = new Date(System.currentTimeMillis());
+        return simpleDateFormat.format(date);
     }
 
     public static String getFormatDate(long min){
