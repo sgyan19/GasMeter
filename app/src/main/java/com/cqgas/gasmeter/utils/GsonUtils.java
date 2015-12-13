@@ -9,9 +9,11 @@ package com.cqgas.gasmeter.utils;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
+import java.util.IllegalFormatException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 
 /**
  * Gson utilities.
@@ -133,5 +135,49 @@ public abstract class GsonUtils {
 	 */
 	public static final <V> V fromJson(Reader reader, Type type) {
 		return GSON.fromJson(reader, type);
+	}
+
+	public static String optString(JsonObject jsonObject, String key) {
+		if (null == jsonObject || null == key) {
+			return "";
+		}
+		try {
+			return jsonObject.get(key).getAsString();
+		} catch (NullPointerException | ClassCastException | IllegalStateException | UnsupportedOperationException e) {
+			return "";
+		}
+	}
+
+	public static String optString(JsonObject jsonObject, String key, String opt) {
+		if (null == jsonObject || null == key) {
+			return opt;
+		}
+		try {
+			return jsonObject.get(key).getAsString();
+		} catch (NullPointerException | ClassCastException | IllegalStateException | UnsupportedOperationException e) {
+			return opt;
+		}
+	}
+
+	public static int optInt(JsonObject jsonObject, String key) {
+		if (null == jsonObject || null == key) {
+			return 0;
+		}
+		try {
+			return jsonObject.get(key).getAsInt();
+		} catch (NullPointerException | ClassCastException | IllegalStateException | UnsupportedOperationException e) {
+			return 0;
+		}
+	}
+
+	public static int optInt(JsonObject jsonObject, String key, int opt) {
+		if (null == jsonObject || null == key) {
+			return opt;
+		}
+		try {
+			return jsonObject.get(key).getAsInt();
+		} catch (NullPointerException | ClassCastException | IllegalStateException | UnsupportedOperationException e) {
+			return opt;
+		}
 	}
 }
