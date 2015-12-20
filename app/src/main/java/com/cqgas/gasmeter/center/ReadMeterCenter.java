@@ -47,61 +47,61 @@ public class ReadMeterCenter {
      * @return
      */
     public static List<MeterCore> getUiAll() throws FileNotFoundException, JsonParseException, SQLException {
-//        if (pcFileExists()) {
-//            buildDBFromPCFile();
-//            deletePCFile();
-//        }
-//        SQLiteDatabase db = null;
-//        Cursor cursor = null;
-//        List<MeterCore> list;
-//        try {
-//            db = dbHelper.getWritableDatabase();
-//            cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME, null);
-//            list = fetchFromCursor(cursor);
-//            return list;
-//        } finally {
-//            if (null != cursor) {
-//                cursor.close();
-//            }
-//            if (null != db) {
-//                db.close();
-//            }
-//        }
+        if (pcFileExists()) {
+            buildDBFromPCFile();
+            deletePCFile();
+        }
+        SQLiteDatabase db = null;
+        Cursor cursor = null;
+        List<MeterCore> list;
+        try {
+            db = dbHelper.getWritableDatabase();
+            cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME, null);
+            list = fetchFromCursor(cursor);
+            return list;
+        } finally {
+            if (null != cursor) {
+                cursor.close();
+            }
+            if (null != db) {
+                db.close();
+            }
+        }
 
-        // 测试数据
-        List<MeterCore> result = new ArrayList<>();
-        MeterCore meter = new MeterCore();
-        meter.cbjl_hz_mc = "袁心伦";
-        meter.cbjl_scbd = 42;
-        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150313");
-        meter.cbjl_bcbd = 93;
-        meter.cbjl_pingjun_yql = "60";
-        result.add(meter);
-
-        meter = new MeterCore();
-        meter.cbjl_hz_mc = "唐登华";
-        meter.cbjl_scbd = 42;
-        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150223");
-        meter.cbjl_bcbd = 93;
-        meter.cbjl_pingjun_yql = "60";
-        result.add(meter);
-
-        meter = new MeterCore();
-        meter.cbjl_hz_mc = "杨世坤";
-        meter.cbjl_scbd = 42;
-        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150703");
-        meter.cbjl_bcbd = 0;
-        meter.cbjl_pingjun_yql = "60";
-        result.add(meter);
-
-        meter = new MeterCore();
-        meter.cbjl_hz_mc = "方仲永";
-        meter.cbjl_scbd = 42;
-        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150527");
-        meter.cbjl_bcbd = 93;
-        meter.cbjl_pingjun_yql = "60";
-        result.add(meter);
-        return result;
+//        // 测试数据
+//        List<MeterCore> result = new ArrayList<>();
+//        MeterCore meter = new MeterCore();
+//        meter.cbjl_hz_mc = "袁心伦";
+//        meter.cbjl_scbd = 42;
+//        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150313");
+//        meter.cbjl_bcbd = 93;
+//        meter.cbjl_pingjun_yql = "60";
+//        result.add(meter);
+//
+//        meter = new MeterCore();
+//        meter.cbjl_hz_mc = "唐登华";
+//        meter.cbjl_scbd = 42;
+//        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150223");
+//        meter.cbjl_bcbd = 93;
+//        meter.cbjl_pingjun_yql = "60";
+//        result.add(meter);
+//
+//        meter = new MeterCore();
+//        meter.cbjl_hz_mc = "杨世坤";
+//        meter.cbjl_scbd = 42;
+//        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150703");
+//        meter.cbjl_bcbd = 0;
+//        meter.cbjl_pingjun_yql = "60";
+//        result.add(meter);
+//
+//        meter = new MeterCore();
+//        meter.cbjl_hz_mc = "方仲永";
+//        meter.cbjl_scbd = 42;
+//        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150527");
+//        meter.cbjl_bcbd = 93;
+//        meter.cbjl_pingjun_yql = "60";
+//        result.add(meter);
+//        return result;
     }
 
     /**
@@ -145,9 +145,31 @@ public class ReadMeterCenter {
 //        return result;
     }
 
+    public static void readMeter(List<MeterCore> data){
+        SQLiteDatabase db = null;
+        String time = DateUtils.currentTime();
+
+        try {
+            db = dbHelper.getWritableDatabase();
+            db.beginTransaction();
+            for(MeterCore item : data){
+                ContentValues cv = new ContentValues();
+                cv.put("cbjl_cb_qk", MeterCore.NORMAL);
+                cv.put("cbjl_sjcbrq", time);
+                cv.put("cbjl_bcbd",item.cbjl_bcbd);
+                db.update(DBHelper.TABLE_NAME, cv, "cbjl_id = ?", new String[]{item.cbjl_id});
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            if (null != db) {
+                db.endTransaction();
+                db.close();
+            }
+        }
+    }
+
     public static void readMeter(String cbjl_id,int number){
         SQLiteDatabase db = null;
-        long time = System.currentTimeMillis();
         try {
             ContentValues cv = new ContentValues();
             cv.put("cbjl_cb_qk", MeterCore.NORMAL);
@@ -160,9 +182,6 @@ public class ReadMeterCenter {
                 db.close();
             }
         }
-
-        updateMeter(cbjl_id, "cbjl_bcbd", number);
-        updateMeter(cbjl_id,"cbjl_cb_qk",MeterCore.NORMAL);
     }
 
     /**
@@ -240,14 +259,9 @@ public class ReadMeterCenter {
      * 根据PC获取的对象，按照ID，遍历获取调用蓝牙接口，获取新值。最把结果按照json数组输出新的文件中
      * @return 成功：true，失败：false
      */
-    public static boolean doBluetoothData(){
-        List<MeterCore> meterCores = new ArrayList<>();
-        for(MeterCore item : meterCores){
-            String i = item.cbjl_id; // 根据id值调用蓝牙接口获取抄表数据
-        }
-
-        StorageUtils.getTargetToPcFilePath(); // 写入文件地址
-        return true;
+    public static void doBluetoothData(BluetoothCenter.ReadMeterCallback callback) throws Exception{
+        List<MeterCore> meterCores = getUiAll();
+        BluetoothCenter.readMeter(meterCores, callback);
     }
 
     /**

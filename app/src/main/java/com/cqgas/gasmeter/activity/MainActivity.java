@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.bluetooth.BluetoothDialog;
+import com.cqgas.gasmeter.center.BluetoothCenter;
 import com.cqgas.gasmeter.center.ReadMeterCenter;
 import com.cqgas.gasmeter.connect.Server;
 import com.cqgas.gasmeter.fragment.QueryMeterFragment;
@@ -161,5 +162,12 @@ public class MainActivity extends AppCompatActivity implements Order,View.OnClic
             model.type = 1;
         }
         return model;
+    }
+
+    @Override
+    protected void onDestroy() {
+        BluetoothCenter.disConnect();
+        Server.stop();
+        super.onDestroy();
     }
 }

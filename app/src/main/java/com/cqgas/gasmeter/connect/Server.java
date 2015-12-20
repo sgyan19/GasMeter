@@ -77,7 +77,8 @@ public class Server {
     private static ExecutorService executor;
     private static Object lock = new Object();
     private static ExecutorService getExecutorInstance(){
-        if(executor == null){
+        if(executor == null || executor.isShutdown()){
+            executor = null;
             synchronized (lock){
                 if(executor == null){
                     executor = Executors.newCachedThreadPool();

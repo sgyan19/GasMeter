@@ -32,12 +32,6 @@
         android:text="@string/query_meter_active"
         />
     <Button
-        android:id="@+id/query_meter_place"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/query_meter_place_show"
-        />
-    <Button
         android:id="@+id/query_meter_exit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

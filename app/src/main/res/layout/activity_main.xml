@@ -1,101 +1,66 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/main_background"
+    android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
+    tools:context=".MainActivity">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_centerInParent="true"
-        >
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/meter_door"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/meter_door"
-                    android:layout_width="@dimen/main_door_button_size"
-                    android:layout_height="@dimen/main_door_button_size"
-                    android:background="@mipmap/meter_door"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/main_read_meter"
-                    />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
+                android:background="@mipmap/meter_door" />
+            <View
+                android:layout_width="5dp"
+                android:layout_height="10dp"
+                />
+            <Button
+                android:id="@+id/query_door"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/query_door"
-                    android:layout_width="@dimen/main_door_button_size"
-                    android:layout_height="@dimen/main_door_button_size"
-                    android:background="@mipmap/query_door"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/main_meter_show"
-                    />
-            </LinearLayout>
+                android:background="@mipmap/query_door" />
         </LinearLayout>
+        <View
+            android:layout_width="5dp"
+            android:layout_height="5dp"
+            />
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <LinearLayout
-                android:layout_width="wrap_content"
+            <Button
+                android:id="@+id/bluetooth_door"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:orientation="vertical">
-                <Button
-                    android:id="@+id/bluetooth_door"
-                    android:layout_width="@dimen/main_door_button_size"
-                    android:layout_height="@dimen/main_door_button_size"
-                    android:background="@mipmap/bluetooth_door"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/main_bluetooth"
-                    />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
+                android:background="@mipmap/bluetooth_door" />
+            <View
+                android:layout_width="5dp"
+                android:layout_height="10dp"
+                />
+            <Button
+                android:id="@+id/exit"
+                android:layout_width="0dp"
+                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:layout_margin="15dp"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/exit"
-                    android:layout_width="@dimen/main_door_button_size"
-                    android:layout_height="@dimen/main_door_button_size"
-                    android:background="@mipmap/exit"
-                    />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/main_exit"
-                    />
-            </LinearLayout>
+                android:background="@mipmap/exit" />
         </LinearLayout>
     </LinearLayout>
 

@@ -1,6 +1,5 @@
 package com.cqgas.gasmeter.fragment;
 
-import android.app.DatePickerDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -13,11 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.center.QueryMeterCenter;
@@ -25,8 +22,6 @@ import com.cqgas.gasmeter.core.QueryCore;
 import com.cqgas.gasmeter.task.ProgressDialogTask;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -34,8 +29,7 @@ import java.util.List;
  */
 public class QueryMeterFragment extends BasePageFragment implements View.OnClickListener{
     private ListView mDetailsList;
-    private Button mCompany;
-    private Button mPlace;
+    private Button mQuery;
     private Button mExit;
     private EditText mQueryCondition;
     @Nullable
@@ -62,12 +56,10 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
         mDetailsList.setAdapter(adapter);
 
         mQueryCondition = (EditText) v.findViewById(R.id.query_meter_input);
-        mCompany = (Button) v.findViewById(R.id.query_meter_active);
-        mPlace = (Button) v.findViewById(R.id.query_meter_place);
+        mQuery = (Button) v.findViewById(R.id.query_meter_active);
         mExit = (Button) v.findViewById(R.id.query_meter_exit);
 
-        mCompany.setOnClickListener(this);
-        mPlace.setOnClickListener(this);
+        mQuery.setOnClickListener(this);
         mExit.setOnClickListener(this);
     }
 
@@ -77,16 +69,13 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
             case R.id.query_meter_active:
                 queryAndShowResult();
                 break;
-            case R.id.query_meter_place:
-                queryAndShowResult();
-                break;
             case R.id.query_meter_exit:
-                getView().postDelayed(new Runnable() {
+                getActivity().runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         getActivity().finish();
                     }
-                },400);
+                });
                 break;
         }
     }
