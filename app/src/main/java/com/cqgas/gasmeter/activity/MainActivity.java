@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.cqgas.gasmeter.R;
+import com.cqgas.gasmeter.bluetooth.BluetoothDialog;
 import com.cqgas.gasmeter.center.ReadMeterCenter;
 import com.cqgas.gasmeter.connect.Server;
 import com.cqgas.gasmeter.fragment.QueryMeterFragment;
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity implements Order,View.OnClic
                 break;
             case R.id.query_door:
                 PageFragmentActivity.fastJump(this, QueryMeterFragment.class.getName());
+                break;
+            case R.id.bluetooth_door:
+                new BluetoothDialog().show(getSupportFragmentManager().beginTransaction(),"");
                 break;
             case R.id.exit:
                 finish();

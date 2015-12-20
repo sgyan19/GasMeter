@@ -47,61 +47,61 @@ public class ReadMeterCenter {
      * @return
      */
     public static List<MeterCore> getUiAll() throws FileNotFoundException, JsonParseException, SQLException {
-        if (pcFileExists()) {
-            buildDBFromPCFile();
-            deletePCFile();
-        }
-        SQLiteDatabase db = null;
-        Cursor cursor = null;
-        List<MeterCore> list;
-        try {
-            db = dbHelper.getWritableDatabase();
-            cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME, null);
-            list = fetchFromCursor(cursor);
-            return list;
-        } finally {
-            if (null != cursor) {
-                cursor.close();
-            }
-            if (null != db) {
-                db.close();
-            }
-        }
+//        if (pcFileExists()) {
+//            buildDBFromPCFile();
+//            deletePCFile();
+//        }
+//        SQLiteDatabase db = null;
+//        Cursor cursor = null;
+//        List<MeterCore> list;
+//        try {
+//            db = dbHelper.getWritableDatabase();
+//            cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME, null);
+//            list = fetchFromCursor(cursor);
+//            return list;
+//        } finally {
+//            if (null != cursor) {
+//                cursor.close();
+//            }
+//            if (null != db) {
+//                db.close();
+//            }
+//        }
 
         // 测试数据
-//        List<MeterCore> result = new ArrayList<>();
-//        MeterCore meter = new MeterCore();
-//        meter.cbjl_hz_mc = "袁心伦";
-//        meter.cbjl_scbd = 42;
-//        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150313");
-//        meter.cbjl_bcbd = 93;
-//        meter.cbjl_pingjun_yql = "60";
-//        result.add(meter);
-//
-//        meter = new MeterCore();
-//        meter.cbjl_hz_mc = "唐登华";
-//        meter.cbjl_scbd = 42;
-//        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150223");
-//        meter.cbjl_bcbd = 93;
-//        meter.cbjl_pingjun_yql = "60";
-//        result.add(meter);
-//
-//        meter = new MeterCore();
-//        meter.cbjl_hz_mc = "杨世坤";
-//        meter.cbjl_scbd = 42;
-//        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150703");
-//        meter.cbjl_bcbd = 0;
-//        meter.cbjl_pingjun_yql = "60";
-//        result.add(meter);
-//
-//        meter = new MeterCore();
-//        meter.cbjl_hz_mc = "方仲永";
-//        meter.cbjl_scbd = 42;
-//        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150527");
-//        meter.cbjl_bcbd = 93;
-//        meter.cbjl_pingjun_yql = "60";
-//        result.add(meter);
-//        return result;
+        List<MeterCore> result = new ArrayList<>();
+        MeterCore meter = new MeterCore();
+        meter.cbjl_hz_mc = "袁心伦";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150313");
+        meter.cbjl_bcbd = 93;
+        meter.cbjl_pingjun_yql = "60";
+        result.add(meter);
+
+        meter = new MeterCore();
+        meter.cbjl_hz_mc = "唐登华";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150223");
+        meter.cbjl_bcbd = 93;
+        meter.cbjl_pingjun_yql = "60";
+        result.add(meter);
+
+        meter = new MeterCore();
+        meter.cbjl_hz_mc = "杨世坤";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150703");
+        meter.cbjl_bcbd = 0;
+        meter.cbjl_pingjun_yql = "60";
+        result.add(meter);
+
+        meter = new MeterCore();
+        meter.cbjl_hz_mc = "方仲永";
+        meter.cbjl_scbd = 42;
+        meter.cbjl_sccbrq = DateUtils.getTimeInMillis("20150527");
+        meter.cbjl_bcbd = 93;
+        meter.cbjl_pingjun_yql = "60";
+        result.add(meter);
+        return result;
     }
 
     /**

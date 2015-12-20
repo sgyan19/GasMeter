@@ -25,19 +25,6 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:orientation="horizontal">
-        <Button
-            android:id="@+id/input_dialog_cancel"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:textColor="#37b0e7"
-            android:text="取消"/>
-
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:background="#3b4a4f" />
 
         <Button
             android:id="@+id/input_dialog_sumbit"
@@ -47,5 +34,20 @@
             android:background="@null"
             android:textColor="#37b0e7"
             android:text="确定"/>
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="#3b4a4f" />
+
+
+        <Button
+            android:id="@+id/input_dialog_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
+            android:textColor="#37b0e7"
+            android:text="取消"/>
     </LinearLayout>
 </LinearLayout>

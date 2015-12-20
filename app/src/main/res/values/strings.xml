@@ -26,4 +26,8 @@
     <string name="user_meter_item_this_read">本次表底：%1$s</string>
     <string name="user_meter_item_this_data">本月用量：%1$s</string>
     <string name="input_dialog_title">输入抄表底数</string>
+    <string name="bluetooth_title_no">未连接设备</string>
+    <string name="bluetooth_title_yes">已连接</string>
+    <string name="bluetooth_exception_no_name">设备名不能为空</string>
+    <string name="bluetooth_exception_failed">设备连接失败</string>
 </resources>
