@@ -3,10 +3,23 @@ package com.cqgas.gasmeter.sqlite;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.cqgas.gasmeter.MyApplication;
+
 /**
  * Created by hs_ghoul on 15/12/13.
  */
 public class DBHelper extends SQLiteOpenHelper {
+
+    private static DBHelper dbHelper;
+
+    static {
+        dbHelper = new DBHelper(MyApplication.getContext());
+    }
+
+    public static DBHelper getInstance() {
+        return dbHelper;
+    }
 
     private static final String DATABASE_NAME = "gas_meter.db";
     private static final int DATABASE_VERSION = 1;

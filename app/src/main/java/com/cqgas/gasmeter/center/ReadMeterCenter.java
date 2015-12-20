@@ -36,7 +36,7 @@ public class ReadMeterCenter {
     private static JsonParser jsonParser;
 
     static {
-        dbHelper = new DBHelper(MyApplication.getContext());
+        dbHelper = DBHelper.getInstance();
         jsonParser = new JsonParser();
     }
 
