@@ -36,7 +36,7 @@ public class QueryMeterCenter {
             int count = cursor.getInt(cursor.getColumnIndex("count"));
             int normal = cursor.getInt(cursor.getColumnIndex("normal"));
             int total = cursor.getInt(cursor.getColumnIndex("total"));
-            int unread = count = normal;
+            int unread = count - normal;
             QueryCore queryCore = new QueryCore();
             queryCore.userCount = count;
             queryCore.readUserCount = normal;
