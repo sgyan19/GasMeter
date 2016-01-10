@@ -1,10 +1,13 @@
 package com.cqgas.gasmeter.fragment;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -15,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.center.QueryMeterCenter;
@@ -32,6 +36,7 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
     private Button mQuery;
     private Button mExit;
     private EditText mQueryCondition;
+    private TextView mTip;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +63,7 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
         mQueryCondition = (EditText) v.findViewById(R.id.query_meter_input);
         mQuery = (Button) v.findViewById(R.id.query_meter_active);
         mExit = (Button) v.findViewById(R.id.query_meter_exit);
-
+        mTip = (TextView) v.findViewById(R.id.query_meter_tip);
         mQuery.setOnClickListener(this);
         mExit.setOnClickListener(this);
     }
@@ -133,10 +138,17 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
         @Override
         protected void onSuccess(QueryCore queryCore) throws Exception {
             super.onSuccess(queryCore);
+            String tip;
+            if(TextUtils.isEmpty(query)){
+                tip = "所有结果";
+            }else{
+                tip = "地址中包含“" +query+ "”的结果";
+            }
+            mTip.setText(tip);
             ListAdapter adapter = mDetailsList.getAdapter();
-            if(adapter instanceof ArrayList<?>) {
-                ((ArrayList<String>)adapter).clear();
-                ((ArrayList<String>)adapter).addAll(getListViewData(queryCore));
+            if(adapter instanceof ArrayAdapter<?>) {
+                ((ArrayAdapter<String>)adapter).clear();
+                ((ArrayAdapter<String>)adapter).addAll(getListViewData(queryCore));
             }
         }
     }

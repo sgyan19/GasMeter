@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item android:id="@+id/read_meter_filter_address"
+        android:title="地址筛选"
+        android:icon="@mipmap/read_meter_menu_add_query"
+        android:checkable="true"
+        android:checked="false"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+
     <item android:id="@+id/read_meter_do_read"
         android:title="@string/action_settings"
         android:icon="@mipmap/read_meter_menu_auto_read"
         android:orderInCategory="100"
         app:showAsAction="always"/>
+
     <item android:id="@+id/read_meter_filter_unread"
         android:title="@string/query_meter_menu_filter"
         android:icon="@mipmap/read_meter_menu_filter_unread"

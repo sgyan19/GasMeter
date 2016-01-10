@@ -7,7 +7,7 @@
     <string name="query_meter_date_tip">时间选择</string>
     <string name="query_meter_date_begin">起始日期</string>
     <string name="query_meter_date_end">结束日期</string>
-    <string name="query_meter_input_hint">查询条件</string>
+    <string name="query_meter_input_hint">地址查询</string>
     <string name="query_meter_active">统计</string>
     <string name="query_meter_place_show">分片区统计</string>
     <string name="query_meter_menu_filter">只显示未抄录</string>

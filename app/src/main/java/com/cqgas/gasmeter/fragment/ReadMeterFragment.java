@@ -92,6 +92,9 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
                 }
                 mFilterItem.setChecked(!mFilterItem.isChecked());
                 break;
+            case R.id.read_meter_filter_address:
+
+                break;
         }
         return true;
     }

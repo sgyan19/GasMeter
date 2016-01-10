@@ -8,7 +8,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="10dp"
         >
         <EditText
             android:id="@+id/query_meter_input"
@@ -18,6 +17,15 @@
             android:hint="@string/query_meter_input_hint"
             />
     </LinearLayout>
+    <TextView
+        android:id="@+id/query_meter_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:textSize="14sp"
+        android:text="所有结果"
+        />
     <ListView
         android:id="@+id/meter_details_list"
         android:layout_weight="1"
