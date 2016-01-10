@@ -12,6 +12,7 @@ import com.cqgas.gasmeter.core.MeterCore;
 import com.rthc.wdj.bluetoothtoollib.MeterHandler;
 import com.rthc.wdj.bluetoothtoollib.SwitchBox;
 import com.rthc.wdj.bluetoothtoollib.ValveHandler;
+import com.rthc.wdj.bluetoothtoollib.cmd.BleCmd;
 
 import java.util.Iterator;
 import java.util.List;
@@ -140,57 +141,60 @@ public class BluetoothCenter {
         AllCount = data.size();
         Handler handler = new Handler(Looper.getMainLooper());
         for(MeterCore item : data){
-            mCore.readMeter(item.rqb_gh, getDevicesIndex(item.rqb_rqblx),
+            mCore.readMeter(item.rqb_gh, getDevicesIndex(item.rqb_gh),
                     new BluetoothCallback(item,data,handler,callback));
         }
     }
     // ----串行式
     private static class BluetoothCallbackV2 implements MeterHandler {
         private Iterator<MeterCore> iterator;
-        private MeterCore one;
         private ReadMeterCallback callback;
         private Handler uiHandler;
         private List<MeterCore> all;
-        public BluetoothCallbackV2(Iterator<MeterCore> iterator,MeterCore one,List<MeterCore> all,Handler uiHandler,ReadMeterCallback callback){
+        private MeterCore thisOne;
+        public BluetoothCallbackV2(Iterator<MeterCore> iterator,MeterCore meterCore,List<MeterCore> all,Handler uiHandler,ReadMeterCallback callback){
             this.iterator = iterator;
             this.callback = callback;
-            this.one = one;
             this.uiHandler = uiHandler;
             this.all = all;
+            thisOne = meterCore;
         }
 
         @Override
         public int callback(float v) {
-            iterator.next().cbjl_bcbd = (int)v;
+            thisOne.cbjl_bcbd = (int)v;
+            thisOne.cbjl_cb_qk= MeterCore.NORMAL;
             ReadCount++;
-            uiHandler.post(new Runnable() {
+            uiHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    callback.onReadOneResult(ReadCount,TimeOutCount,AllCount,true,all);
-                    if(iterator.hasNext()){
-                        MeterCore meter = iterator.next();
-                        mCore.readMeter(meter.rqb_gh,getDevicesIndex(meter.rqb_rqblx),new BluetoothCallbackV2(iterator,meter,all,uiHandler,callback));
+                    callback.onReadOneResult(ReadCount, TimeOutCount, AllCount, true, all);
+                    if (iterator.hasNext()) {
+                        thisOne = iterator.next();
+                        mCore.readMeter(thisOne.rqb_gh, getDevicesIndex(thisOne.rqb_gh), BluetoothCallbackV2.this);
+                    } else {
+                        Reading = false;
                     }
                 }
-            });
-            if((ReadCount + TimeOutCount) == AllCount){
-                Reading = false;
-            }
+            }, 1000);
             return 0;
         }
 
         @Override
         public void timeOut() {
             TimeOutCount++;
-            uiHandler.post(new Runnable() {
+            uiHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     callback.onReadOneResult(ReadCount,TimeOutCount,AllCount,false,all);
+                    if(iterator.hasNext()){
+                        thisOne = iterator.next();
+                        mCore.readMeter(thisOne.rqb_gh,getDevicesIndex(thisOne.rqb_gh),BluetoothCallbackV2.this);
+                    }else{
+                        Reading = false;
+                    }
                 }
-            });
-            if((ReadCount + TimeOutCount) == AllCount){
-                Reading = false;
-            }
+            },1000);
         }
     }
 
@@ -206,8 +210,8 @@ public class BluetoothCenter {
         Iterator<MeterCore> iterator = data.iterator();
         if(iterator.hasNext()) {
             MeterCore meter = iterator.next();
-            mCore.readMeter(meter.rqb_gh, getDevicesIndex(meter.rqb_rqblx),
-                    new BluetoothCallbackV2(iterator, meter, data, handler, callback));
+            mCore.readMeter(meter.rqb_gh, getDevicesIndex(meter.rqb_gh),
+                    new BluetoothCallbackV2(iterator,meter,data, handler, callback));
         }
     }
 
@@ -218,16 +222,22 @@ public class BluetoothCenter {
         return true;
     }
 
-    private static int getDevicesIndex(String modelName){
+    private static int getDevicesIndex(String meterId){
         int result = -1;
         if(DevicesTable == null){
             DevicesTable = MyApplication.getContext().getResources().getStringArray(R.array.moduleArray);
         }
-        for(int i = 0 ;i < DevicesTable.length;i++){
-            if(DevicesTable[i].equals(modelName)){
-                result = i;
+        int id = meterId.length();
+        switch(id){
+            case 14:
+                result = BleCmd.CTR_MODULE_ID_SKYSHOOT;
                 break;
-            }
+            case 8:
+                result = BleCmd.CTR_MODULE_ID_JIEXUN;
+                break;
+            case 16:
+                result = BleCmd.CTR_MODULE_ID_LIERDA;
+                break;
         }
         return result;
     }

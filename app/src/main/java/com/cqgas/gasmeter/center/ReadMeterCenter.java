@@ -121,7 +121,7 @@ public class ReadMeterCenter {
         List<MeterCore> list;
         try {
             db = dbHelper.getWritableDatabase();
-            cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME + " WHILE cbjl_cb_qk != ?", new String[]{String.valueOf(MeterCore.NORMAL)});
+            cursor = db.rawQuery("SELECT * FROM " + DBHelper.TABLE_NAME + " WHERE cbjl_cb_qk != ?", new String[]{String.valueOf(MeterCore.NORMAL)});
             list = fetchFromCursor(cursor);
             return list;
         } finally {
@@ -154,7 +154,7 @@ public class ReadMeterCenter {
             db.beginTransaction();
             for(MeterCore item : data){
                 ContentValues cv = new ContentValues();
-                cv.put("cbjl_cb_qk", MeterCore.NORMAL);
+                cv.put("cbjl_cb_qk", item.cbjl_cb_qk);
                 cv.put("cbjl_sjcbrq", time);
                 cv.put("cbjl_bcbd",item.cbjl_bcbd);
                 db.update(DBHelper.TABLE_NAME, cv, "cbjl_id = ?", new String[]{item.cbjl_id});

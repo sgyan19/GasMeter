@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -36,7 +37,7 @@ public class DataInputDialog extends Dialog {
         super.onCreate(savedInstanceState);
         setTitle(getContext().getResources().getString(R.string.input_dialog_title));
         editText = (EditText)findViewById(R.id.input_dialog_edit);
-        editText.setText(value);
+        //editText.setText(value);
         findViewById(R.id.input_dialog_sumbit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,5 +63,13 @@ public class DataInputDialog extends Dialog {
                 return false;
             }
         });
+        editText.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager inputManager =
+                        (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                inputManager.showSoftInput(editText, 0);
+            }
+        },200);
     }
 }

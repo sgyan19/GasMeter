@@ -154,6 +154,6 @@ public class MeterCore {
 
 
     public static boolean isRead(@NonNull MeterCore core){
-        return core.cbjl_bcbd != 0;
+        return core.cbjl_cb_qk == NORMAL;
     }
 }

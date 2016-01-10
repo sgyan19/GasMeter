@@ -26,7 +26,7 @@ public class Server {
         Server.callBack = c;
         try {
             if(mServerSocket != null && !mServerSocket.isClosed()){
-                mServerSocket.close();
+                return;
             }
             mServerSocket = new ServerSocket(SERVER_PORT);
         }catch (IOException e){
@@ -42,16 +42,22 @@ public class Server {
                 try {
                     while(runningFlag) {
                         Log.d("sun","start listening");
-                        Socket socket = mServerSocket.accept();
-                        Log.d("sun","socket accept");
-                        if(socket != null) {
-                            socketHandling = true;
-                            SocketRunner handler = SocketRunner.create(socket, mainHandle, callBack);
-                            if(handler != null){
-                                handler.run();
+                        final Socket socket = mServerSocket.accept();
+                        Log.d("sun", "socket accept");
+                        ExecutorService exeexe = getExecutorInstance();
+                        exeexe.execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (socket != null) {
+                                    socketHandling = true;
+                                    SocketRunner handler = SocketRunner.create(socket, mainHandle, callBack);
+                                    if (handler != null) {
+                                        handler.run();
+                                    }
+                                }
+                                socketHandling = false;
                             }
-                        }
-                        socketHandling = false;
+                        });
                     }
                 }catch (IOException e){
                     e.printStackTrace();

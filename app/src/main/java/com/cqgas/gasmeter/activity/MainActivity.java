@@ -1,6 +1,9 @@
 package com.cqgas.gasmeter.activity;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,12 +27,13 @@ import java.io.File;
 
 public class MainActivity extends AppCompatActivity implements Order,View.OnClickListener {
     private ConnectHandler handler;
-
+    private Handler mHandler;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         handler = new ConnectHandler(this,this);
+        mHandler = new Handler();
         Server.start(handler, handler);
 
         initDoorListener();
@@ -113,7 +117,7 @@ public class MainActivity extends AppCompatActivity implements Order,View.OnClic
 
     @Override
     public ResponseModel onEndUpdata(String name) {
-        Toast.makeText(this,"上传完成",Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"上传完成",Toast.LENGTH_SHORT).show();
         String dir = StorageUtils.getTargetDirPath();
         String[] names = StorageUtils.getFileList(dir);
         ResponseModel model = new ResponseModel();
@@ -128,6 +132,15 @@ public class MainActivity extends AppCompatActivity implements Order,View.OnClic
                 model.name = name;
             }
         }
+        mHandler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                Dialog alertDialog = new AlertDialog.Builder(MainActivity.this).
+                        setMessage("获取到PC新数据").
+                        create();
+                alertDialog.show();
+            }
+        },500);
         return model;
     }
 

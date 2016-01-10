@@ -99,15 +99,18 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
     @Override
     public void onReadOneResult(int readCount, int timeoutCount, int allCount, boolean success, List<MeterCore> obj) {
         dialog.setProgress(readCount + timeoutCount);
+        dialog.setMessage(String.format("%d成功，%d超时", readCount, timeoutCount));
         if(readCount + timeoutCount == allCount){
-            dialog.setMessage(String.format("抄表完成,%d个成功，%d个超时", readCount, timeoutCount));
             if(mAdaper == null) {
                 mAdaper = new UserMeterBaseAdapter(getActivity(), obj);
                 mListView.setAdapter(mAdaper);
             }else{
-                mAdaper.reset(obj);
+                mAdaper.notifyDataSetChanged();
             }
             readMeterResult = obj;
+            dialog.dismiss();
+//            dialog.setCancelable(true);
+            Toast.makeText(getActivity(),String.format("抄表完成,%d个成功，%d个超时", readCount, timeoutCount),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -169,7 +172,17 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
 
         @Override
         public List<MeterCore> call() throws Exception {
-            return ReadMeterCenter.getUiUnRead();
+            List<MeterCore> result = null;
+            if(mAdaper == null) {
+                if(mFilterItem.isChecked()){
+                    result = ReadMeterCenter.getUiAll();
+                }else{
+                    result = ReadMeterCenter.getUiUnRead();
+                }
+            }else{
+                result = mAdaper.getObjects();
+            }
+            return result;
         }
 
         @Override
@@ -179,15 +192,15 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
                 dialog.dismiss();
             }
             createProgressDialog();
-            dialog.setProgress(0);
             dialog.setMax(data.size());
             dialog.show();
+            dialog.setProgress(0);
             BluetoothCenter.readMeterV2(data,ReadMeterFragment.this);
         }
 
         @Override
         protected void onException(Exception e) throws RuntimeException {
-            super.onException(e);
+                super.onException(e);
             e.printStackTrace();
         }
     }
@@ -223,9 +236,11 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
 
     private void createProgressDialog(){
         dialog = new ProgressDialog(getActivity());
-        dialog.setTitle("蓝牙抄表");
+        dialog.setTitle("蓝牙抄表中");
+        dialog.setMessage(String.format("%d成功，%d超时", 0, 0));
         dialog.setCancelable(false);
-        dialog.setIndeterminate(true);
+        dialog.setIndeterminate(false);
         dialog.setOnDismissListener(this);
+        dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
     }
 }

@@ -67,6 +67,7 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
                     public void onClick(String v) {
                         int number = Integer.valueOf(v);
                         core.cbjl_bcbd = number;
+                        core.cbjl_cb_qk = MeterCore.NORMAL;
                         ReadMeterCenter.readMeter(core.cbjl_id, number);
                         updateIsRead(h,core);
                     }
