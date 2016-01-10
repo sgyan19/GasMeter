@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.cqgas.gasmeter.MyApplication;
 import com.cqgas.gasmeter.core.MeterCore;
+import com.cqgas.gasmeter.core.QueryCore;
 import com.cqgas.gasmeter.sqlite.DBHelper;
 import com.cqgas.gasmeter.utils.DateUtils;
 import com.cqgas.gasmeter.utils.StorageUtils;
@@ -39,6 +40,22 @@ public class ReadMeterCenter {
         dbHelper = DBHelper.getInstance();
         jsonParser = new JsonParser();
     }
+
+    public static List<List<MeterCore>> getQueryAddressResult(String addr) throws SQLException{
+        List<List<MeterCore>> result = new ArrayList<>();
+        QueryCore core = QueryMeterCenter.getUiQuery(addr);
+        List<MeterCore> all = core.list;
+        List<MeterCore> unRead = new ArrayList<>();
+        for(MeterCore meter : all){
+            if(!MeterCore.isRead(meter)){
+                unRead.add(meter);
+            }
+        }
+        result.add(all);
+        result.add(unRead);
+        return result;
+    }
+
 
     /**
      * 获取用于UI显示的列表，可能会被UI改动，所以要new一个新容器

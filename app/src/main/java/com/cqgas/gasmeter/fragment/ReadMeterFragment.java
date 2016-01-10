@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,6 +23,8 @@ import com.cqgas.gasmeter.center.BluetoothCenter;
 import com.cqgas.gasmeter.center.ReadMeterCenter;
 import com.cqgas.gasmeter.core.MeterCore;
 import com.cqgas.gasmeter.task.ProgressDialogTask;
+import com.cqgas.gasmeter.ui.DataInputDialog;
+import com.cqgas.gasmeter.ui.DataInputDialogTitle;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -37,7 +40,13 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
     private UserMeterBaseAdapter mAdaper;
     private MenuItem mFilterItem;
     private ProgressDialog dialog;
+
+    private String addrQuery;
+
     private List<MeterCore> readMeterResult;
+
+    private List<MeterCore> allMeter;
+    private List<MeterCore> unReadMeter;
 
     @Nullable
     @Override
@@ -61,7 +70,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
 
     private void initView(View rootView){
         mListView = (ListView)rootView.findViewById(R.id.user_list);
-        new GetCoreData(GetCoreData.FLAG_GET_ALL).execute();
+        new GetCoreData("").execute();
     }
 
     @Override
@@ -85,15 +94,26 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
                 new ReadBluetoothTask().execute();
                 break;
             case R.id.read_meter_filter_unread:
-                if(mFilterItem.isChecked()){
-                    new GetCoreData(GetCoreData.FLAG_GET_ALL).execute();
-                }else{
-                    new GetCoreData(GetCoreData.FLAG_GET_UNREAD).execute();
-                }
                 mFilterItem.setChecked(!mFilterItem.isChecked());
+                List<MeterCore> now = mFilterItem.isChecked() ? unReadMeter : allMeter;
+                if(mAdaper == null) {
+                    mAdaper = new UserMeterBaseAdapter(getActivity(), new ArrayList<MeterCore>());
+                    mAdaper.addAll(now);
+                    mListView.setAdapter(mAdaper);
+                }else{
+                    mAdaper.clear();
+                    mAdaper.addAll(now);
+                }
                 break;
             case R.id.read_meter_filter_address:
-
+                DataInputDialogTitle dialog = new DataInputDialogTitle(getActivity(),new DataInputDialogTitle.DialogOnClickListener() {
+                    @Override
+                    public void onClick(String v) {
+                        addrQuery = v;
+                        new GetCoreData(v).execute();
+                    }
+                },"输入过滤地址");
+                dialog.show();
                 break;
         }
         return true;
@@ -105,7 +125,8 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         dialog.setMessage(String.format("%d成功，%d超时", readCount, timeoutCount));
         if(readCount + timeoutCount == allCount){
             if(mAdaper == null) {
-                mAdaper = new UserMeterBaseAdapter(getActivity(), obj);
+                mAdaper = new UserMeterBaseAdapter(getActivity(), new ArrayList<MeterCore>());
+                mAdaper.addAll(obj);
                 mListView.setAdapter(mAdaper);
             }else{
                 mAdaper.notifyDataSetChanged();
@@ -117,13 +138,15 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         }
     }
 
-    private class GetCoreData extends ProgressDialogTask<List<MeterCore>>{
+    private class GetCoreData extends ProgressDialogTask<List<List<MeterCore>>>{
         public static final int FLAG_GET_ALL = 0;
         public static final int FLAG_GET_UNREAD = 1;
         private int flag;
-        public GetCoreData(int flag){
+        private String queryAddr;
+        public GetCoreData(String addr){
             super(getActivity());
             this.flag = flag;
+            this.queryAddr = addr;
         }
 
         @Override
@@ -132,16 +155,17 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
             showIndeterminate();
         }
         @Override
-        public List<MeterCore> call() throws Exception {
-            List<MeterCore> result = null;
-            switch (flag){
-                case FLAG_GET_ALL:
-                    result = ReadMeterCenter.getUiAll();
-                    break;
-                case FLAG_GET_UNREAD:
-                    result = ReadMeterCenter.getUiUnRead();
-                    break;
-            }
+        public List<List<MeterCore>> call() throws Exception {
+            List<List<MeterCore>>  result= null;
+//            switch (flag){
+//                case FLAG_GET_ALL:
+//                    result = ReadMeterCenter.getUiAll();
+//                    break;
+//                case FLAG_GET_UNREAD:
+//                    result = ReadMeterCenter.getUiUnRead();
+//                    break;
+//            }
+            result = ReadMeterCenter.getQueryAddressResult(queryAddr);
             return result;
         }
         @Override
@@ -151,14 +175,20 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
                 Toast.makeText(getActivity(), "Json数据文件不存在", Toast.LENGTH_SHORT).show();
         }
         @Override
-        protected void onSuccess(List<MeterCore> objects) throws Exception {
+        protected void onSuccess(List<List<MeterCore>> objects) throws Exception {
             super.onSuccess(objects);
+            allMeter = objects.get(0);
+            unReadMeter = objects.get(1);
+
             if(mAdaper == null) {
-                mAdaper = new UserMeterBaseAdapter(getActivity(), objects);
+                mAdaper = new UserMeterBaseAdapter(getActivity(), new ArrayList<MeterCore>());
+                mAdaper.addAll(allMeter);
                 mListView.setAdapter(mAdaper);
             }else{
-                mAdaper.reset(objects);
+                mAdaper.clear();
+                mAdaper.addAll(allMeter);
             }
+            mFilterItem.setChecked(false);
         }
     }
 
