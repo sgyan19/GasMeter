@@ -27,6 +27,7 @@ import com.cqgas.gasmeter.ui.DataInputDialog;
 import com.cqgas.gasmeter.ui.DataInputDialogTitle;
 
 import java.io.FileNotFoundException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,6 +49,18 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
     private List<MeterCore> allMeter;
     private List<MeterCore> unReadMeter;
 
+    private static WeakReference<ReadMeterFragment> instance;
+    public static ReadMeterFragment getInstance(){
+        if(instance != null){
+            return instance.get();
+        }
+        return null;
+    }
+
+    public void resetData(){
+        new GetCoreData("").execute();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -55,6 +68,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         View view = inflater.inflate(R.layout.read_meter_fragment,container,false);
         mRootView = view;
         getActivity().setTitle(R.string.user_list);
+        instance = new WeakReference<>(this);
         return view;
     }
 

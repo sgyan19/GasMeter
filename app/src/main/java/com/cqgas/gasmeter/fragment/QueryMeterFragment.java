@@ -25,6 +25,8 @@ import com.cqgas.gasmeter.center.QueryMeterCenter;
 import com.cqgas.gasmeter.core.QueryCore;
 import com.cqgas.gasmeter.task.ProgressDialogTask;
 
+import java.io.FileNotFoundException;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +39,9 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
     private Button mExit;
     private EditText mQueryCondition;
     private TextView mTip;
+
+
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -57,7 +62,14 @@ public class QueryMeterFragment extends BasePageFragment implements View.OnClick
     }
     private void initView(View v){
         mDetailsList = (ListView) v.findViewById(R.id.meter_details_list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, getListViewData(QueryMeterCenter.getUiQuery("")));
+        QueryCore core = null;
+        try{
+            core = QueryMeterCenter.getUiQuery("");
+        }catch (FileNotFoundException e){
+            e.printStackTrace();
+            core = new QueryCore();
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, getListViewData(core));
         mDetailsList.setAdapter(adapter);
 
         mQueryCondition = (EditText) v.findViewById(R.id.query_meter_input);

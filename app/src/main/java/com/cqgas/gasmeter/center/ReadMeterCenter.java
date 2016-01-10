@@ -41,7 +41,7 @@ public class ReadMeterCenter {
         jsonParser = new JsonParser();
     }
 
-    public static List<List<MeterCore>> getQueryAddressResult(String addr) throws SQLException{
+    public static List<List<MeterCore>> getQueryAddressResult(String addr) throws SQLException,FileNotFoundException{
         List<List<MeterCore>> result = new ArrayList<>();
         QueryCore core = QueryMeterCenter.getUiQuery(addr);
         List<MeterCore> all = core.list;
@@ -288,7 +288,7 @@ public class ReadMeterCenter {
      * @throws JSONException 数据库错误
      * @return
      */
-    private static void buildDBFromPCFile() throws FileNotFoundException, JsonParseException, SQLException {
+    public static void buildDBFromPCFile() throws FileNotFoundException, JsonParseException, SQLException {
         SQLiteDatabase db = null;
         BufferedReader bufferedReader = null;
         try {
@@ -323,13 +323,13 @@ public class ReadMeterCenter {
         }
     }
 
-    private static boolean pcFileExists() {
+    public static boolean pcFileExists() {
         String pcFilePath = StorageUtils.getTargetFormPcFilePath();
         File pcFile = new File(pcFilePath);
         return pcFile.exists();
     }
 
-    private static void deletePCFile() {
+    public static void deletePCFile() {
         String pcFilePath = StorageUtils.getTargetFormPcFilePath();
         File pcFile = new File(pcFilePath);
         if (pcFile.exists()) {
@@ -337,7 +337,7 @@ public class ReadMeterCenter {
         }
     }
 
-    private static List<MeterCore> fetchFromCursor(Cursor cursor) {
+    public static List<MeterCore> fetchFromCursor(Cursor cursor) {
         int size = cursor.getCount();
         List<MeterCore> list = new ArrayList<>(size);
         while (cursor.moveToNext()) {

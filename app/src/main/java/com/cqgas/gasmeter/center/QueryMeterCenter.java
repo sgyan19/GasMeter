@@ -9,6 +9,7 @@ import com.cqgas.gasmeter.core.MeterCore;
 import com.cqgas.gasmeter.core.QueryCore;
 import com.cqgas.gasmeter.sqlite.DBHelper;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,9 +24,13 @@ public class QueryMeterCenter {
         dbHelper = DBHelper.getInstance();
     }
 
-    public static QueryCore getUiQuery(String query) throws SQLException {
+    public static QueryCore getUiQuery(String query) throws SQLException,FileNotFoundException{
         if (null == query) {
             query = "";
+        }
+        if (ReadMeterCenter.pcFileExists()) {
+            ReadMeterCenter.buildDBFromPCFile();
+            ReadMeterCenter.deletePCFile();
         }
         SQLiteDatabase db = null;
         Cursor cursor = null;

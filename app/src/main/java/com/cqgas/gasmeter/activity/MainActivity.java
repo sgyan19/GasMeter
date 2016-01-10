@@ -139,6 +139,10 @@ public class MainActivity extends AppCompatActivity implements Order,View.OnClic
                         setMessage("获取到PC新数据").
                         create();
                 alertDialog.show();
+                ReadMeterFragment f = ReadMeterFragment.getInstance();
+                if(f != null){
+                    f.resetData();
+                }
             }
         },500);
         return model;
