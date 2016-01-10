@@ -1,5 +1,7 @@
 package com.cqgas.gasmeter.core;
 
+import java.util.List;
+
 /**
  * Created by 国耀 on 2015/12/5.
  */
@@ -8,6 +10,8 @@ public class QueryCore {
     public int readUserCount = 0;   // 已抄户数
     public int unReadUserCount = 0; // 未抄户数
     public int readData = 0;        // 抄表总数
+
+    public List<MeterCore> list;
 
     public String getUiUserCount(){
         return String.format("     用户总数：%d", userCount);

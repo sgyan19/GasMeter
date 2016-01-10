@@ -29,6 +29,7 @@ public class QueryMeterCenter {
         }
         SQLiteDatabase db = null;
         Cursor cursor = null;
+        QueryCore queryCore = new QueryCore();
         try {
             db = dbHelper.getReadableDatabase();
             cursor = db.rawQuery("select count(*) as count, sum(case when cbjl_cb_qk = " + MeterCore.NORMAL +  " then 1 else 0 end) as normal, sum(cbjl_bcbd) as total from " + DBHelper.TABLE_NAME + " where cbjl_yqdz_ms like ?", new String[]{"%" + query + "%"});
@@ -37,12 +38,10 @@ public class QueryMeterCenter {
             int normal = cursor.getInt(cursor.getColumnIndex("normal"));
             int total = cursor.getInt(cursor.getColumnIndex("total"));
             int unread = count - normal;
-            QueryCore queryCore = new QueryCore();
             queryCore.userCount = count;
             queryCore.readUserCount = normal;
             queryCore.unReadUserCount = unread;
             queryCore.readData = total;
-            return queryCore;
         } finally {
             if (null != cursor) {
                 cursor.close();
@@ -51,5 +50,32 @@ public class QueryMeterCenter {
                 db.close();
             }
         }
+
+        db = null;
+        cursor = null;
+        try {
+            db = dbHelper.getReadableDatabase();
+            cursor = db.rawQuery("select * from " + DBHelper.TABLE_NAME + " where cbjl_yqdz_ms like ?", new String[]{"%" + query + "%"});
+            List<MeterCore> list = fetchFromCursor(cursor);
+            queryCore.list = list;
+        } finally {
+            if (null != cursor) {
+                cursor.close();
+            }
+            if (null != db) {
+                db.close();
+            }
+        }
+
+        return queryCore;
+    }
+
+    private static List<MeterCore> fetchFromCursor(Cursor cursor) {
+        int size = cursor.getCount();
+        List<MeterCore> list = new ArrayList<>(size);
+        while (cursor.moveToNext()) {
+            list.add(MeterCore.parse(cursor));
+        }
+        return list;
     }
 }
