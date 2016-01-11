@@ -58,7 +58,8 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
     }
 
     public void resetData(){
-        new GetCoreData("").execute();
+        addrQuery = "";
+        new GetCoreData("",GetCoreData.FLAG_GET_ALL).execute();
     }
 
     @Nullable
@@ -69,6 +70,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         mRootView = view;
         getActivity().setTitle(R.string.user_list);
         instance = new WeakReference<>(this);
+        addrQuery = "";
         return view;
     }
 
@@ -84,7 +86,8 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
 
     private void initView(View rootView){
         mListView = (ListView)rootView.findViewById(R.id.user_list);
-        new GetCoreData("").execute();
+        addrQuery = "";
+        new GetCoreData("",GetCoreData.FLAG_GET_ALL).execute();
     }
 
     @Override
@@ -108,23 +111,16 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
                 new ReadBluetoothTask().execute();
                 break;
             case R.id.read_meter_filter_unread:
-                mFilterItem.setChecked(!mFilterItem.isChecked());
-                List<MeterCore> now = mFilterItem.isChecked() ? unReadMeter : allMeter;
-                if(mAdaper == null) {
-                    mAdaper = new UserMeterBaseAdapter(getActivity(), new ArrayList<MeterCore>());
-                    mAdaper.addAll(now);
-                    mListView.setAdapter(mAdaper);
-                }else{
-                    mAdaper.clear();
-                    mAdaper.addAll(now);
-                }
+                boolean checked = mFilterItem.isChecked();
+                int flag = checked ? GetCoreData.FLAG_GET_ALL : GetCoreData.FLAG_GET_UNREAD;
+                new GetCoreData(addrQuery,flag).execute();
                 break;
             case R.id.read_meter_filter_address:
                 DataInputDialogTitle dialog = new DataInputDialogTitle(getActivity(),new DataInputDialogTitle.DialogOnClickListener() {
                     @Override
                     public void onClick(String v) {
                         addrQuery = v;
-                        new GetCoreData(v).execute();
+                        new GetCoreData(v,GetCoreData.FLAG_GET_ALL).execute();
                     }
                 },"输入过滤地址");
                 dialog.show();
@@ -157,7 +153,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         public static final int FLAG_GET_UNREAD = 1;
         private int flag;
         private String queryAddr;
-        public GetCoreData(String addr){
+        public GetCoreData(String addr,int flag){
             super(getActivity());
             this.flag = flag;
             this.queryAddr = addr;
@@ -171,14 +167,6 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         @Override
         public List<List<MeterCore>> call() throws Exception {
             List<List<MeterCore>>  result= null;
-//            switch (flag){
-//                case FLAG_GET_ALL:
-//                    result = ReadMeterCenter.getUiAll();
-//                    break;
-//                case FLAG_GET_UNREAD:
-//                    result = ReadMeterCenter.getUiUnRead();
-//                    break;
-//            }
             result = ReadMeterCenter.getQueryAddressResult(queryAddr);
             return result;
         }
@@ -191,18 +179,25 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         @Override
         protected void onSuccess(List<List<MeterCore>> objects) throws Exception {
             super.onSuccess(objects);
-            allMeter = objects.get(0);
-            unReadMeter = objects.get(1);
-
+            List<MeterCore> result = null;
+            switch (flag){
+                case FLAG_GET_ALL:
+                    result = objects.get(0);
+                    mFilterItem.setChecked(false);
+                    break;
+                case FLAG_GET_UNREAD:
+                    result = objects.get(1);
+                    mFilterItem.setChecked(true);
+                    break;
+            }
             if(mAdaper == null) {
                 mAdaper = new UserMeterBaseAdapter(getActivity(), new ArrayList<MeterCore>());
-                mAdaper.addAll(allMeter);
+                mAdaper.addAll(result);
                 mListView.setAdapter(mAdaper);
             }else{
                 mAdaper.clear();
-                mAdaper.addAll(allMeter);
+                mAdaper.addAll(result);
             }
-            mFilterItem.setChecked(false);
         }
     }
 
