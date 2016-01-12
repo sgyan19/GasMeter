@@ -37,7 +37,7 @@ public class BluetoothCenter {
     }
 
     public static String getUiDevicesName(){
-        return mDevicesName;
+        return TextUtils.isEmpty(mDevicesName) ? "SwitchBox_0001":mDevicesName;
     }
 
     public static void connect() throws Exception{

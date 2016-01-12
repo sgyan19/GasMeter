@@ -41,6 +41,7 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
         holder.mThisData = (TextView) v.findViewById(R.id.user_meter_item_this_data);
         holder.mActive = (Button) v.findViewById(R.id.user_meter_item_enter);
         holder.mLineText = (TextView) v.findViewById(R.id.user_meter_item_index);
+        holder.mAddrText = (TextView)v.findViewById(R.id.user_meter_item_addr);
     }
 
     @Override
@@ -54,6 +55,7 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
         holder.mAverageData.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_average_data), item.cbjl_pingjun_yql));
         holder.mLastRead.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_last_read), item.cbjl_scbd));
         holder.mLastDate.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_last_read_date), DateUtils.getFormatDate(item.cbjl_sccbrq)));
+        holder.mAddrText.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_address),item.cbjl_yqdz_ms));
         holder.mLineText.setText(String.valueOf(position + 1));
         updateIsRead(holder,item);
         holder.data = item;
@@ -99,6 +101,7 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
         TextView mThisRead; // 本次度数
         TextView mThisData; // 本次用量
         TextView mLineText; // 行序号
+        TextView mAddrText;
         Button mActive;
         MeterCore data;
     }

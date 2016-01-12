@@ -2,7 +2,7 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="list_item_height">60dp</dimen>
+    <dimen name="list_item_height">70dp</dimen>
     <dimen name="list_item_text_size">12sp</dimen>
     <dimen name="main_door_button_size">130dp</dimen>
 </resources>

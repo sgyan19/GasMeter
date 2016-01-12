@@ -24,7 +24,7 @@ public class DataInputDialogTitle extends Dialog {
     private String title;
     public DataInputDialogTitle(Context context, DialogOnClickListener onPositiveClickListener, String title){
         super(context);
-        setContentView(R.layout.input_dialog);
+        setContentView(R.layout.input_dialog_title);
         listener = onPositiveClickListener;
         this.title = title;
     }

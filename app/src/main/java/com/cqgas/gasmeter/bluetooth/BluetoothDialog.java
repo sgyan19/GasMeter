@@ -20,6 +20,7 @@ public class BluetoothDialog extends DialogFragment implements View.OnClickListe
     EditText mDevicesEdit;
     Button mConnect;
     Button mDisConnect;
+    String mDefaultDevice;
 
     @Nullable
     @Override

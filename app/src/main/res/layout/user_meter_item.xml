@@ -97,6 +97,16 @@
                     android:text="本月用量:"
                     android:textSize="@dimen/list_item_text_size" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/user_meter_item_addr"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:text="用户地址:"
+                android:textSize="@dimen/list_item_text_size"
+                />
+
         </LinearLayout>
 
         <Button

@@ -25,6 +25,7 @@
     <string name="user_meter_item_average_data">平均用量：%1$s</string>
     <string name="user_meter_item_this_read">本次表底：%1$s</string>
     <string name="user_meter_item_this_data">本月用量：%1$s</string>
+    <string name="user_meter_item_address">用户地址：%1$s</string>
     <string name="input_dialog_title">输入抄表底数</string>
     <string name="bluetooth_title_no">未连接设备</string>
     <string name="bluetooth_title_yes">已连接</string>
