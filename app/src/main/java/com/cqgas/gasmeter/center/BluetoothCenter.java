@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.cqgas.gasmeter.MyApplication;
 import com.cqgas.gasmeter.R;
@@ -13,7 +14,10 @@ import com.rthc.wdj.bluetoothtoollib.MeterHandler;
 import com.rthc.wdj.bluetoothtoollib.SwitchBox;
 import com.rthc.wdj.bluetoothtoollib.ValveHandler;
 import com.rthc.wdj.bluetoothtoollib.cmd.BleCmd;
+import com.rthc.wdj.bluetoothtoollib.cmd.Cmd;
+import com.rthc.wdj.bluetoothtoollib.cmd.MeterStateConst;
 
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -101,7 +105,7 @@ public class BluetoothCenter {
         }
 
         @Override
-        public int callback(float v) {
+        public int callback(final float v, final HashMap map) {
             reader.cbjl_bcbd = (int)v;
             ReadCount++;
             uiHandler.post(new Runnable() {
@@ -161,22 +165,53 @@ public class BluetoothCenter {
         }
 
         @Override
-        public int callback(float v) {
-            thisOne.cbjl_bcbd = (int)v;
-            thisOne.cbjl_cb_qk= MeterCore.NORMAL;
-            ReadCount++;
-            uiHandler.postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    callback.onReadOneResult(ReadCount, TimeOutCount, AllCount, true, all);
-                    if (iterator.hasNext()) {
-                        thisOne = iterator.next();
-                        mCore.readMeter(thisOne.rqb_gh, getDevicesIndex(thisOne.rqb_gh), BluetoothCallbackV2.this);
-                    } else {
-                        Reading = false;
-                    }
+        public int callback(final float v, final HashMap map) {
+
+            if (v < 0) {
+                timeOut();
+            } else {
+                String valveStateStr = "";
+                if (map.get(Cmd.KEY_VALVE_STATE) == MeterStateConst.STATE_VALVE.OPEN) {
+                    valveStateStr = "开";
+                } else if (map.get(Cmd.KEY_VALVE_STATE) == MeterStateConst.STATE_VALVE.CLOSE) {
+                    valveStateStr = "关";
+                } else {
+                    valveStateStr = "异常";
                 }
-            }, 1000);
+
+                String power36Str;
+                if (map.get(Cmd.KEY_BATTERY_3_6_STATE) == MeterStateConst.STATE_POWER_3_6_V.LOW) {
+                    power36Str = "低";
+                } else {
+                    power36Str = "正常";
+                }
+
+                String power6Str;
+                if (map.get(Cmd.KEY_BATTERY_6_STATE) == MeterStateConst.STATE_POWER_6_V.LOW) {
+                    power6Str = "低";
+                } else {
+                    power6Str = "正常";
+                }
+                String str = "读数：" + v
+                        + "\n阀门状态:" + valveStateStr
+                        + "\n3.6V电压:" + power36Str
+                        + "\n6V电压:" + power6Str;
+                thisOne.cbjl_bcbd = (int)v;
+                thisOne.cbjl_cb_qk= MeterCore.NORMAL;
+                ReadCount++;
+                uiHandler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        callback.onReadOneResult(ReadCount, TimeOutCount, AllCount, true, all);
+                        if (iterator.hasNext()) {
+                            thisOne = iterator.next();
+                            mCore.readMeter(thisOne.rqb_gh, getDevicesIndex(thisOne.rqb_gh), BluetoothCallbackV2.this);
+                        } else {
+                            Reading = false;
+                        }
+                    }
+                }, 1000);
+            }
             return 0;
         }
 
@@ -227,17 +262,14 @@ public class BluetoothCenter {
         if(DevicesTable == null){
             DevicesTable = MyApplication.getContext().getResources().getStringArray(R.array.moduleArray);
         }
-        int id = meterId.length();
-        switch(id){
-            case 14:
+        if(meterId.length() == 8){ //利尔达模块
+            result = BleCmd.CTR_MODULE_ID_LIERDA;
+        }else if(meterId.length() == 14){
+            if(meterId.substring(4,6).equals("16")){ //绿色模块
                 result = BleCmd.CTR_MODULE_ID_SKYSHOOT;
-                break;
-            case 8:
+            }else if(meterId.substring(4,6).equals("15")){ //蓝色模块
                 result = BleCmd.CTR_MODULE_ID_JIEXUN;
-                break;
-            case 16:
-                result = BleCmd.CTR_MODULE_ID_LIERDA;
-                break;
+            }
         }
         return result;
     }
