@@ -126,7 +126,7 @@ public class BluetoothCenter {
             uiHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    callback.onReadOneResult(ReadCount,TimeOutCount,AllCount,false,all);
+                    callback.onReadOneResult(ReadCount, TimeOutCount, AllCount, false, all);
                 }
             });
             if((ReadCount + TimeOutCount) == AllCount){

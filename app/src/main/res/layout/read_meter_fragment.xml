@@ -8,6 +8,5 @@
         android:layout_height="match_parent"
         android:fadingEdge="none"
         android:listSelector="#00ffffff"
-        android:descendantFocusability="afterDescendants"
         />
 </LinearLayout>

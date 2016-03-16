@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -42,6 +43,7 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
         holder.mActive = (Button) v.findViewById(R.id.user_meter_item_enter);
         holder.mLineText = (TextView) v.findViewById(R.id.user_meter_item_index);
         holder.mAddrText = (TextView)v.findViewById(R.id.user_meter_item_addr);
+        holder.mContainer = (ViewGroup) v.findViewById(R.id.user_meter_item_container);
     }
 
     @Override
@@ -77,6 +79,16 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
                 dialog.show();
             }
         });
+        final int p = position;
+        final MeterCore c = item;
+        holder.mContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(listener != null){
+                    listener.onItemClick(p,c);
+                }
+            }
+        });
     }
 
     public void updateIsRead(ItemHolder holder, MeterCore item){
@@ -102,7 +114,16 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
         TextView mThisData; // 本次用量
         TextView mLineText; // 行序号
         TextView mAddrText;
+        ViewGroup mContainer;
         Button mActive;
         MeterCore data;
+    }
+
+    private OnItemClickListener listener;
+    public void setOnItemClickListener(OnItemClickListener l){
+        listener = l;
+    }
+    public interface OnItemClickListener{
+        void onItemClick(int position,MeterCore item);
     }
 }

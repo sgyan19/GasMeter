@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -34,7 +35,7 @@ import java.util.List;
 /**
  * Created by 国耀 on 2015/11/28.
  */
-public class ReadMeterFragment extends BasePageFragment implements BluetoothCenter.ReadMeterCallback,DialogInterface.OnDismissListener{
+public class ReadMeterFragment extends BasePageFragment implements BluetoothCenter.ReadMeterCallback,DialogInterface.OnDismissListener,UserMeterBaseAdapter.OnItemClickListener{
 
     private View mRootView;
     private ListView mListView;
@@ -135,9 +136,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         dialog.setMessage(String.format("%d成功，%d超时", readCount, timeoutCount));
         if(readCount + timeoutCount == allCount){
             if(mAdaper == null) {
-                mAdaper = new UserMeterBaseAdapter(getActivity(), new ArrayList<MeterCore>());
-                mAdaper.addAll(obj);
-                mListView.setAdapter(mAdaper);
+                createAdapter(obj);
             }else{
                 mAdaper.notifyDataSetChanged();
             }
@@ -191,9 +190,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
                     break;
             }
             if(mAdaper == null) {
-                mAdaper = new UserMeterBaseAdapter(getActivity(), new ArrayList<MeterCore>());
-                mAdaper.addAll(result);
-                mListView.setAdapter(mAdaper);
+                createAdapter(result);
             }else{
                 mAdaper.clear();
                 mAdaper.addAll(result);
@@ -284,5 +281,22 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         dialog.setIndeterminate(false);
         dialog.setOnDismissListener(this);
         dialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+    }
+    @Override
+    public void onItemClick(int position, MeterCore item) {
+        if(BluetoothCenter.isConnect()){
+            List<MeterCore> data = new ArrayList<>();
+            data.add(mAdaper.getItem(position));
+            BluetoothCenter.readMeterV2(data,ReadMeterFragment.this);
+        }else{
+            Toast.makeText(getActivity(),getResources().getString(R.string.bluetooth_no_connect),Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void createAdapter(List<MeterCore> data){
+        mAdaper = new UserMeterBaseAdapter(getActivity(), new ArrayList<MeterCore>());
+        mAdaper.addAll(data);
+        mAdaper.setOnItemClickListener(this);
+        mListView.setAdapter(mAdaper);
     }
 }
