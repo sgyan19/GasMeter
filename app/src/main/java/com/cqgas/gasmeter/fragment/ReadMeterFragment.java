@@ -133,7 +133,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
     @Override
     public void onReadOneResult(int readCount, int timeoutCount, int allCount, boolean success, List<MeterCore> obj) {
         dialog.setProgress(readCount + timeoutCount);
-        dialog.setMessage(String.format("%d成功，%d超时", readCount, timeoutCount));
+        dialog.setMessage(String.format("%d成功，%d异常", readCount, timeoutCount));
         if(readCount + timeoutCount == allCount){
             if(mAdaper == null) {
                 createAdapter(obj);
@@ -143,7 +143,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
             readMeterResult = obj;
             dialog.dismiss();
 //            dialog.setCancelable(true);
-            Toast.makeText(getActivity(),String.format("抄表完成,%d个成功，%d个超时", readCount, timeoutCount),Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),String.format("抄表完成,%d个成功，%d个异常", readCount, timeoutCount),Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -276,7 +276,7 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
     private void createProgressDialog(){
         dialog = new ProgressDialog(getActivity());
         dialog.setTitle("蓝牙抄表中");
-        dialog.setMessage(String.format("%d成功，%d超时", 0, 0));
+        dialog.setMessage(String.format("%d成功，%d异常", 0, 0));
         dialog.setCancelable(false);
         dialog.setIndeterminate(false);
         dialog.setOnDismissListener(this);
@@ -287,6 +287,13 @@ public class ReadMeterFragment extends BasePageFragment implements BluetoothCent
         if(BluetoothCenter.isConnect()){
             List<MeterCore> data = new ArrayList<>();
             data.add(mAdaper.getItem(position));
+            if(dialog != null){
+                dialog.dismiss();
+            }
+            createProgressDialog();
+            dialog.setMax(data.size());
+            dialog.show();
+            dialog.setProgress(0);
             BluetoothCenter.readMeterV2(data,ReadMeterFragment.this);
         }else{
             Toast.makeText(getActivity(),getResources().getString(R.string.bluetooth_no_connect),Toast.LENGTH_SHORT).show();

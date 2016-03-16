@@ -11,7 +11,9 @@ import java.util.Date;
  */
 public class DateUtils {
     public static final String DATE_FORMAT="yyyyMMdd";
+    public static final String FULL_DATE_FORMAT="yyyyMMddHHmmss";
     public static SimpleDateFormat simpleDateFormat;
+    public static SimpleDateFormat fullDateFormat;
 
     public static long getTimeInMillis(String date) {
         long result = 0;
@@ -27,11 +29,11 @@ public class DateUtils {
     }
 
     public static String currentTime(){
-        if(simpleDateFormat == null){
-            simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
+        if(fullDateFormat == null){
+            fullDateFormat = new SimpleDateFormat(DATE_FORMAT);
         }
         Date date = new Date(System.currentTimeMillis());
-        return simpleDateFormat.format(date);
+        return fullDateFormat.format(date);
     }
 
     public static String getFormatDate(long min){
@@ -40,5 +42,13 @@ public class DateUtils {
             simpleDateFormat = new SimpleDateFormat(DATE_FORMAT);
         }
         return simpleDateFormat.format(date);
+    }
+
+    public static String getFullFormatDate(long min){
+        Date date = new Date(min);
+        if(fullDateFormat == null){
+            fullDateFormat = new SimpleDateFormat(FULL_DATE_FORMAT);
+        }
+        return fullDateFormat.format(date);
     }
 }

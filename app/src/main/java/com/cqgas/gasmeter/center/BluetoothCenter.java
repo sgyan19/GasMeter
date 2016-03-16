@@ -5,11 +5,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.cqgas.gasmeter.MyApplication;
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.core.MeterCore;
+import com.cqgas.gasmeter.utils.DateUtils;
 import com.rthc.wdj.bluetoothtoollib.MeterHandler;
 import com.rthc.wdj.bluetoothtoollib.SwitchBox;
 import com.rthc.wdj.bluetoothtoollib.ValveHandler;
@@ -25,7 +27,7 @@ import java.util.List;
  * Created by 国耀 on 2015/12/20.
  */
 public class BluetoothCenter {
-
+    private static final String TAG = "BluetoothCenter";
     private static boolean isConnect = false;
     private static String mDevicesName = "";
     private static SwitchBox mCore = null;
@@ -196,9 +198,16 @@ public class BluetoothCenter {
                         + "\n阀门状态:" + valveStateStr
                         + "\n3.6V电压:" + power36Str
                         + "\n6V电压:" + power6Str;
-                thisOne.cbjl_bcbd = (int)v;
-                thisOne.cbjl_cb_qk= MeterCore.NORMAL;
-                ReadCount++;
+                Log.d(TAG,"抄表" + str);
+                if((int)v >= thisOne.cbjl_scbd){
+                    thisOne.cbjl_bcbd = (int)v;
+                    thisOne.cbjl_cb_qk= MeterCore.NORMAL;
+                    thisOne.cbjl_sjcbrq = DateUtils.getFullFormatDate(System.currentTimeMillis());
+                    ReadCount++;
+                }else{
+                    TimeOutCount++;
+                }
+
                 uiHandler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -214,9 +223,16 @@ public class BluetoothCenter {
             }
             return 0;
         }
-
+        private static int adasd= 18;
         @Override
         public void timeOut() {
+            /*** 测试用
+            HashMap<String,Object> result = new HashMap<>();
+            result.put(Cmd.KEY_VALVE_STATE,MeterStateConst.STATE_VALVE.OPEN);
+            result.put(Cmd.KEY_BATTERY_3_6_STATE,MeterStateConst.STATE_POWER_3_6_V.LOW);
+            result.put(Cmd.KEY_BATTERY_6_STATE,MeterStateConst.STATE_POWER_6_V.LOW);
+            callback(adasd++, result);
+             **/
             TimeOutCount++;
             uiHandler.postDelayed(new Runnable() {
                 @Override

@@ -138,7 +138,7 @@ public class MeterCore {
 
     public static String getUiThisRead(@NonNull MeterCore core){
         String result = "";
-        if(core.cbjl_bcbd != 0){
+        if(MeterCore.isRead(core)){
             result = core.cbjl_bcbd + "";
         }
         return result;
@@ -146,7 +146,7 @@ public class MeterCore {
 
     public static String getUiThisMonthData(@NonNull MeterCore core){
         String result = "";
-        if(core.cbjl_bcbd != 0){
+        if(MeterCore.isRead(core)){
             result = (core.cbjl_bcbd - core.cbjl_scbd) + "";
         }
         return result;
