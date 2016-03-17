@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.center.ReadMeterCenter;
@@ -68,12 +69,19 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
             public void onClick(View v) {
                 DataInputDialog dialog = new DataInputDialog(mContext, new DataInputDialog.DialogOnClickListener() {
                     @Override
-                    public void onClick(String v) {
+                    public boolean onClick(String v,boolean isTwice,TextView messageShower) {
                         int number = Integer.valueOf(v);
-                        core.cbjl_bcbd = number;
-                        core.cbjl_cb_qk = MeterCore.NORMAL;
-                        ReadMeterCenter.readMeter(core.cbjl_id, number);
-                        updateIsRead(h,core);
+                        if(number < core.cbjl_scbd && !isTwice) {
+                            //Toast.makeText(getContext(),"本次表底小于上次表底，请确认是否正确？",Toast.LENGTH_SHORT).show();
+                            messageShower.setText("本次表底小于上次表底，请确认是否正确？");
+                            return false;
+                        }else {
+                            core.cbjl_bcbd = number;
+                            core.cbjl_cb_qk = MeterCore.NORMAL;
+                            ReadMeterCenter.readMeter(core.cbjl_id, number);
+                            updateIsRead(h, core);
+                        }
+                        return true;
                     }
                 },MeterCore.getUiThisRead(core));
                 dialog.show();

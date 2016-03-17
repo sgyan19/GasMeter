@@ -17,12 +17,14 @@ import com.cqgas.gasmeter.R;
 public class DataInputDialog extends Dialog {
 
     public interface DialogOnClickListener{
-        void onClick(String v);
+        boolean onClick(String v,boolean isClickTwice,TextView textView);
     }
 
     private DialogOnClickListener listener;
     private EditText editText;
+    private TextView messgeTip;
     private String value;
+    private boolean clickTwice = false;
     public DataInputDialog(Context context,DialogOnClickListener onPositiveClickListener,String value){
         super(context);
         setContentView(R.layout.input_dialog);
@@ -36,13 +38,15 @@ public class DataInputDialog extends Dialog {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setTitle(getContext().getResources().getString(R.string.input_dialog_title));
+        messgeTip = (TextView)findViewById(R.id.input_dialog_message);
         editText = (EditText)findViewById(R.id.input_dialog_edit);
         //editText.setText(value);
         findViewById(R.id.input_dialog_sumbit).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                listener.onClick(getInputMsg());
-                dismiss();
+                if(listener.onClick(getInputMsg(),clickTwice,messgeTip))
+                    dismiss();
+                clickTwice = true;
             }
         });
         findViewById(R.id.input_dialog_cancel).setOnClickListener(new View.OnClickListener() {
@@ -56,8 +60,9 @@ public class DataInputDialog extends Dialog {
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 if (keyCode == KeyEvent.KEYCODE_ENTER) {
                     if (listener != null) {
-                        listener.onClick(getInputMsg());
-                        dismiss();
+                        if(listener.onClick(getInputMsg(),clickTwice,messgeTip))
+                            dismiss();
+                        clickTwice = true;
                     }
                 }
                 return false;

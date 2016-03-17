@@ -30,7 +30,7 @@ public class DateUtils {
 
     public static String currentTime(){
         if(fullDateFormat == null){
-            fullDateFormat = new SimpleDateFormat(DATE_FORMAT);
+            fullDateFormat = new SimpleDateFormat(FULL_DATE_FORMAT);
         }
         Date date = new Date(System.currentTimeMillis());
         return fullDateFormat.format(date);
