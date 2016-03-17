@@ -113,7 +113,12 @@ public class MeterCore {
         String cbjl_pingjun_yql = GsonUtils.optString(obj, "cbjl_pingjun_yql");
         String jzq_bh = GsonUtils.optString(obj, "jzq_bh");
         String cbjl_yqzh = GsonUtils.optString(obj, "cbjl_yqzh");
-        int cbjl_bcbd = GsonUtils.optInt(obj, "cbjl_bcbd");
+        int cbjl_bcbd = 0;
+        try {
+            cbjl_bcbd = GsonUtils.optInt(obj, "cbjl_bcbd", 0);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         String cbjl_sjcbrq = GsonUtils.optString(obj, "cbjl_sjcbrq");
         int cbjl_cb_qk = GsonUtils.optInt(obj, "cbjl_cb_qk", UNREAD);
 
