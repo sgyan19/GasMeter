@@ -1,1 +1,1 @@
-include ':app', ':bluetoothtoollib-1.0.0', ':bluetoothtoollib-1.0.2'
+include ':app', ':bluetoothtoollib-1.0.0', ':bluetoothtoollib-1.0.2', ':bluetoothtoollib-1.0.4'

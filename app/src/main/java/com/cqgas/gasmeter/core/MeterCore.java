@@ -154,6 +154,14 @@ public class MeterCore {
         return result;
     }
 
+    public static String getTableNumber(@NonNull MeterCore core){
+        String result = "";
+        if(MeterCore.isRead(core)){
+            result = core.rqb_gh + "";
+        }
+        return result;
+    }
+
     public static String getUiThisMonthData(@NonNull MeterCore core){
         String result = "";
         if(MeterCore.isRead(core)){

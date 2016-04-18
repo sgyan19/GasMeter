@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.cqgas.gasmeter.R;
 import com.cqgas.gasmeter.center.ReadMeterCenter;
@@ -57,7 +56,7 @@ public class UserMeterBaseAdapter extends BaseArrayAdapter<MeterCore, UserMeterB
         holder.mUserText.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_name), item.cbjl_hz_mc));
         holder.mAverageData.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_average_data), item.cbjl_pingjun_yql));
         holder.mLastRead.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_last_read), item.cbjl_scbd));
-        holder.mLastDate.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_last_read_date), DateUtils.getFormatDate(item.cbjl_sccbrq)));
+        holder.mLastDate.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_last_read_date), item.rqb_gh));
         holder.mAddrText.setText(String.format(mContext.getResources().getString(R.string.user_meter_item_address),item.cbjl_yqdz_ms));
         holder.mLineText.setText(String.valueOf(position + 1));
         updateIsRead(holder,item);

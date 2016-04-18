@@ -26,6 +26,6 @@ public class QueryCore {
     }
 
     public String getUiReadData(){
-        return String.format("     抄表总数：%d",readData);
+        return String.format("     抄表总量：%d",readData);
     }
 }

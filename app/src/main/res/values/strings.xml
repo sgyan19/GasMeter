@@ -21,7 +21,7 @@
     <string name="main_exit">退    出</string>
     <string name="user_meter_item_name">户主名称：%1$s</string>
     <string name="user_meter_item_last_read">上次表底：%1$s</string>
-    <string name="user_meter_item_last_read_date">上次日期：%1$s</string>
+    <string name="user_meter_item_last_read_date">表号：%1$s</string>
     <string name="user_meter_item_average_data">平均用量：%1$s</string>
     <string name="user_meter_item_this_read">本次表底：%1$s</string>
     <string name="user_meter_item_this_data">本月用量：%1$s</string>

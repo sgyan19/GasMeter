@@ -37,16 +37,17 @@ public class QueryMeterCenter {
         QueryCore queryCore = new QueryCore();
         try {
             db = dbHelper.getReadableDatabase();
-            cursor = db.rawQuery("select count(*) as count, sum(case when cbjl_cb_qk = " + MeterCore.NORMAL +  " then 1 else 0 end) as normal, sum(cbjl_bcbd) as total from " + DBHelper.TABLE_NAME + " where cbjl_yqdz_ms like ?", new String[]{"%" + query + "%"});
+            cursor = db.rawQuery("select count(*) as count, sum(case when cbjl_cb_qk = " + MeterCore.NORMAL +  " then 1 else 0 end) as normal, sum(cbjl_bcbd) as total1,sum(cbjl_scbd) as total2 from " + DBHelper.TABLE_NAME + " where cbjl_yqdz_ms like ?", new String[]{"%" + query + "%"});
             cursor.moveToNext();
             int count = cursor.getInt(cursor.getColumnIndex("count"));
             int normal = cursor.getInt(cursor.getColumnIndex("normal"));
-            int total = cursor.getInt(cursor.getColumnIndex("total"));
+            int total1 = cursor.getInt(cursor.getColumnIndex("total1"));
+            int total2 = cursor.getInt(cursor.getColumnIndex("total2"));
             int unread = count - normal;
             queryCore.userCount = count;
             queryCore.readUserCount = normal;
             queryCore.unReadUserCount = unread;
-            queryCore.readData = total;
+            queryCore.readData = total1 - total2;
         } finally {
             if (null != cursor) {
                 cursor.close();

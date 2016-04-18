@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/list_item_height">
+    android:layout_height="wrap_content">
     <RelativeLayout
         android:id="@+id/user_meter_item_container"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/list_item_height"
+        android:layout_height="wrap_content"
         android:background="?android:attr/selectableItemBackground"
         android:clickable="true">
         <TextView
@@ -49,6 +49,7 @@
                     android:layout_weight="1"
                     android:singleLine="true"
                     android:text="平均用量:"
+                    android:visibility="gone"
                     android:textSize="@dimen/list_item_text_size" />
             </LinearLayout>
         <LinearLayout
@@ -103,7 +104,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:text="用户地址:"
+                android:text="用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1用户地址:1"
                 android:textSize="@dimen/list_item_text_size"
                 />
 
